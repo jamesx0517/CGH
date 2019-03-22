@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<CGH.Models.Hr>
-
+@using CGH.helper
 @{
     ViewBag.Title = "List";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,78 +10,88 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table" border="3">
+<table class="table" border="1" width: 770px;>
     <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Dep1.DepName)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.MemberID)
         </th>
-        
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.Status1.StatusName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        
+        <th>
+            @Html.DisplayNameFor(model => model.IDcardNO)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Sex1.SexName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Title1.TitleName)
+
+
+
+
+
         <th>
             @Html.DisplayNameFor(model => model.Birthday)
         </th>
-       
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MobilePhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HomePhone)
-        </th>
+
         
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.MemberID)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.Birthday)
-        </td>
-       
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-       
-      
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MobilePhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HomePhone)
-        </td>
-        
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Dep1.DepName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status1.StatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDcardNO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sex1.SexName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Title1.TitleName)
+            </td>
+
+
+
+
+            <td >
+                @Html.ToFullTaiwanDate(item.Birthday)
+              
+            </td>
+
+    
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { _ID = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { _ID = item.ID }) 
+
+            </td>
+        </tr>
+    }
 
 </table>

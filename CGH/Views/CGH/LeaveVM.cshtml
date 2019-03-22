@@ -1,0 +1,174 @@
+﻿@model CGH.Models.HCmultiViewModel
+
+@{
+    ViewBag.Title = "離職證明";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<img src="~/images/logo.jpg" height="50" height="185">
+<center>
+    <font size="14" face="標楷體">員工離職證明</font><br><br>
+</center>
+
+<table class="table" border="3">
+
+
+    @foreach (var item in Model.CermuVM)
+    {@:<p style="text-align:right">
+            @:【@DateTime.Now.Date.AddYears(-1911).Year】重光醫【證】字第  @Html.Label(item.ContentNO.ToString())  號
+        @:       </p>
+        @:<hr />
+        <br>
+
+        foreach (var itemhr in Model.HrmuVM.Where(m => m.MemberID == item.MemberID))
+
+        {
+            <tr>
+
+
+                <td height="50">
+                    @Html.DisplayNameFor(itemx => itemhr.Name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(itemx => itemhr.Name)
+                </td>
+
+                <td height="50">
+                    @Html.DisplayNameFor(itemx => itemhr.Sex)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(itemx => itemhr.Sex1.SexName)
+                </td>
+
+                <td height="50">
+                    @Html.DisplayNameFor(itemx => itemhr.IDcardNO)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(itemx => itemhr.IDcardNO)
+                </td>
+            </tr>
+            <tr>
+                <td height="50">
+                    @Html.DisplayNameFor(itemx => itemhr.Birthplace)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(itemx => itemhr.Birthplace)
+                </td>
+
+                <td height="50" colspan="2">
+                    @Html.DisplayNameFor(itemx => itemhr.Birthday)
+                </td>
+
+                <td colspan="2">
+
+                    @Convert.ToDateTime(itemhr.Birthday).ToLongDateString()
+
+                </td>
+            </tr>
+            <tr>
+                <td height="50">
+                    @Html.DisplayNameFor(itemx => itemhr.StartDate)
+                </td>
+
+                <td colspan="2">
+
+                    @Convert.ToDateTime(itemhr.StartDate).ToLongDateString()
+                </td>
+
+                <td height="50">
+                    @Html.DisplayNameFor(itemx => itemhr.EndDate)
+
+                </td>
+
+                <td colspan="2">
+                    @Convert.ToDateTime(itemhr.EndDate).ToLongDateString()
+
+                </td>
+            </tr>
+            <tr>
+                <td height="50" colspan="1">
+                    @Html.DisplayNameFor(itemx => itemhr.Dep)
+                </td>
+
+                <td colspan="5">
+                    @Html.DisplayFor(itemx => itemhr.Dep1.DepName)
+                </td>
+            </tr>
+
+            <tr>
+                <td height="50" colspan="1">
+                    @Html.DisplayNameFor(itemx => itemhr.Title)
+                </td>
+
+                <td colspan="5">
+                    @Html.DisplayFor(itemx => itemhr.Title1.TitleName)
+                </td>
+            </tr>
+
+            <tr>
+                <td height="50" colspan="1">
+                    備註
+                </td>
+
+                <td colspan="5">
+                    @Html.Label(item.Contents.ToString())
+                </td>
+            </tr>
+
+
+        }
+    }
+
+
+
+
+
+</table>
+<p style="font-size:20px">
+    ●上列各項確實無訛特此證明，本證明僅證明其身份及年資，不做它用。
+</p>
+<center>
+    <br><br><br><br><br><br> <br><br>
+
+    <table align="right">
+        <font face="標楷體">
+
+
+            <td>
+                <p style="font-size:20px">院長：陳忠信</p>
+            </td>
+            <tr>
+                <td><p style="font-size:20px">院址：苗栗縣頭份市中華路一０三九號</p></td>
+            <tr>
+                <td><p style="font-size:20px">電話：037-663030</p></td>
+        </font>
+        <tr>
+            <td>
+                <font face="細明體" size="5" align="right">
+                    中華民國@(DateTime.Now.AddYears(-1911).Year)年 @DateTime.Now.ToString("MM月dd日")
+                </font>
+            </td>
+
+</center>
+</table><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

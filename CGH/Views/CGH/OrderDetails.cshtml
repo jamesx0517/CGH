@@ -1,0 +1,125 @@
+﻿@model CGH.Models.Order
+@using CGH.helper
+@{
+    ViewBag.Title = "OrderDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style=font-size:20px;font-family:DFKai-sb;>
+    <table align="left" border="1">
+        <tr><td colspan="2" align="center">重光醫院</td></tr>
+        <tr>
+            <td colspan="2" align="center">
+                本收據<br>
+                印花稅總繳
+            </td>
+        </tr>
+        <tr>
+            <td>苗栗縣</td>
+            <td>負責總繳人：陳忠信</td>
+        </tr>
+    </table>
+
+    <table align="center">
+        <td>收　　　據</td>
+        <td>&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;</td>
+    </table>
+
+   <table align="right">
+        <td><font size="3"> 單據號碼：</font></td>
+        <td><font size="3">@Html.DisplayFor(model => model.OrderID)</font></td>
+    </table>
+
+    <table align="center">
+        <tr>
+            <td align="center">
+                @Html.ToFullTaiwanDate(Model.BillingDate)
+            </td>
+        </tr>
+    </table>
+    <br><br><br>
+    <table align="left">
+        <tr><td>單位：</td>
+            <td>@Html.DisplayFor(model => model.BuyerUnit1.BuyerUnitName)</td>
+        </tr>
+        <td>姓名：</td>
+        <td>@Html.DisplayFor(model => model.BuyerName)</td>
+    </table>
+    <table align="right" ">
+        <tr><td rowspan="2">期間：</td><td>自 @Html.ToFullTaiwanDate(Model.StartDate)</font></td></tr>
+        <td>至 @Html.ToFullTaiwanDate(Model.EndDate)</td>
+    </table>
+
+
+    <dl class="dl-horizontal">
+        <table border="3" width="100%">
+            <tr>
+                <td width="25%" align="center">@Html.DisplayNameFor(model => model.Category)</td>
+                <td align="center">@Html.DisplayNameFor(model => model.Quantity)</td>
+                <td align="center">@Html.DisplayNameFor(model => model.Money)</td>
+                <td align="center">@Html.DisplayNameFor(model => model.Remark)</td>
+            </tr>
+
+
+            <tr>
+                <td align="center">
+                    @Html.DisplayFor(model => model.BuyCategory1.BuyCategoryName)
+                </td>
+
+
+
+                <td align="center">
+                    @Html.DisplayFor(model => model.Quantity)
+                </td>
+
+
+
+                <td align="center">
+                    @Html.Normalize(Model.Money)
+                </td>
+
+                <td align="center">
+                    @Html.DisplayFor(model => model.Remark)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" height="100" align="center">以下空白</td>
+            </tr>
+            <tr>
+                <td colspan="4">新台幣 @Html.ConvertToChineseMoney(Model.Money) 整</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    名稱:重光醫院 負責人:陳忠信 統一編號:49616209<br>
+
+                    院址:苗栗縣頭份市中華路1039號 電話:037-668266~8
+                </td>
+            </tr>
+        </table>
+
+        <table align="right">
+            <td>
+                @Html.DisplayNameFor(model => model.UserID)：
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.UsersTable1.UserName)
+            </td>
+        </table>
+        <table>
+            <tr> <td><font size="3">附註</font></td><td><font size="3">1.本收據未蓋收費章者無效</font></td></tr>
+            <tr> <td></td><td><font size="3">2.扣繳所得10%請於次月10日前繳納</font></td></tr>
+            <tr> <td></td><td><font size="3">3.扣繳憑單請於次年2月底前寄達本院</font></td></tr>
+        </table>
+</div>
+
+
+
+
+

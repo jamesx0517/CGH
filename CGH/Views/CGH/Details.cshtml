@@ -1,86 +1,222 @@
 ﻿@model CGH.Models.Hr
-
+@using CGH.helper
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>
+    重光醫院<br>
+    員工基本資料
+</h2>
+<p style="text-align:right">
+    NO. @Html.DisplayFor(model => model.MemberID)
+</p>
 
 <div>
-    <h4>Hr</h4>
+    <h4></h4>
     <hr />
     <dl class="dl-horizontal">
+        <center>
+            <Table border="2" width="75%" height="40">
+
+                <tr>
+                    <td height="40">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayNameFor(model => model.Nationality1.NationalityName)
+                    </td>
+
+                    <td colspan="2">
+                        @Html.DisplayFor(model => model.Nationality1.NationalityName)
+                    </td>
+                    <td rowspan="5" width="15%" align="center">相片</td>
+                </tr>
+                <tr>
+
+                    <td height="40">
+                        @Html.DisplayNameFor(model => model.IDcardNO)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.IDcardNO)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Sex1.SexName)
+                    </td>
+
+                    <td colspan="2">
+                        @Html.DisplayFor(model => model.Sex1.SexName)
+                    </td>
+
+                </tr>
+                <tr>
+                    <td height="40">
+                        @Html.DisplayNameFor(model => model.Title1.TitleName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Title1.TitleName)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Birthplace)
+                    </td>
+
+                    <td colspan="2">
+                        @Html.DisplayFor(model => model.Birthplace)
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        @Html.DisplayNameFor(model => model.Dep1.DepName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Dep1.DepName)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Marriage1.MarriageName)
+                    </td>
+
+                    <td colspan="2">
+                        @Html.DisplayFor(model => model.Marriage1.MarriageName)
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </td>
+
+                    <td>
+                        @Html.ToFullTaiwanDate(Model.StartDate)
+                       
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Birthday)
+                    </td>
+
+                    <td colspan="2">
+
+                        @Html.ToFullTaiwanDate(Model.Birthday)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Hire1.HireName)
+                    </td>
+
+                    <td height="50">
+                        @Html.DisplayFor(model => model.Hire1.HireName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayNameFor(model => model.Military1.MilitaryName)
+                    </td>
+
+                    <td height="50">
+                        @Html.DisplayFor(model => model.Military1.MilitaryName)
+                    </td>
+
+
+
+
+
+                </tr>
+                <tr>
+                    <td height="50">
+                        @Html.DisplayNameFor(model => model.Height)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Height)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayNameFor(model => model.Weight)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Weight)
+                    </td>
+
+                    <td height="50">
+
+
+                        @Html.DisplayNameFor(model => model.Bool.BoolName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Bool.BoolName)
+                    </td>
+                </tr>
+                <tr>
+
+
+                    <td height="50">
+                        @Html.DisplayNameFor(model => model.Postal2)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Postal2)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Address2)
+                    </td>
+
+                    <td colspan="3">
+                        @Html.DisplayFor(model => model.Address2)
+                    </td>
+
+                </tr>
+                <tr>
+                    <td height="50">
+                        @Html.DisplayNameFor(model => model.Postal1)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Postal1)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Address1)
+                    </td>
+
+                    <td colspan="3">
+                        @Html.DisplayFor(model => model.Address1)
+                    </td>
+
+
+                </tr>
+
+            </Table>
+        </center>
         <dt>
-            @Html.DisplayNameFor(model => model.MemberID)
+            @Html.DisplayNameFor(model => model.Status1.StatusName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MemberID)
+            @Html.DisplayFor(model => model.Status1.StatusName)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Pw)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Pw)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDcardNO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDcardNO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Nationality)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nationality)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EndDate)
+
+
+            @Html.ToFullTaiwanDate(Model.EndDate)
         </dd>
 
         <dt>
@@ -92,13 +228,12 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Welfare)
+            @Html.DisplayNameFor(model => model.Welfare1.WelfareName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Welfare)
+            @Html.DisplayFor(model => model.Welfare1.WelfareName)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Labor)
         </dt>
@@ -107,29 +242,9 @@
             @Html.DisplayFor(model => model.Labor)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Hire)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Hire)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Dep)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Dep)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Boss)
@@ -154,15 +269,13 @@
         <dd>
             @Html.DisplayFor(model => model.Agent)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.WorkingHR)
+            @Html.DisplayNameFor(model => model.WorkingHR1.WorkingHRName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.WorkingHR)
+            @Html.DisplayFor(model => model.WorkingHR1.WorkingHRName)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Remarks)
         </dt>
@@ -179,52 +292,29 @@
             @Html.DisplayFor(model => model.PassPortID)
         </dd>
 
+
         <dt>
-            @Html.DisplayNameFor(model => model.Marriage)
+            @Html.DisplayNameFor(model => model.Bool.BoolName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Marriage)
+            @Html.DisplayFor(model => model.Bool.BoolName)
         </dd>
 
+
         <dt>
-            @Html.DisplayNameFor(model => model.Blood)
+            @Html.DisplayNameFor(model => model.Highestedu1.HighestName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Blood)
+            @Html.DisplayFor(model => model.Highestedu1.HighestName)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Sex)
+            @Html.DisplayNameFor(model => model.Graduation1.GraduationName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Sex)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Height)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Height)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Weight)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Weight)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Military)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Military)
+            @Html.DisplayFor(model => model.Graduation1.GraduationName)
         </dd>
 
         <dt>
@@ -251,13 +341,7 @@
             @Html.DisplayFor(model => model.MEdate)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Birthplace)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Birthplace)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Email)
@@ -290,46 +374,16 @@
         <dd>
             @Html.DisplayFor(model => model.Method)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Send)
+            @Html.DisplayNameFor(model => model.Send1.SendName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Send)
+            @Html.DisplayFor(model => model.Send1.SendName)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address1)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Address1)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Postal1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Postal1)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address2)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address2)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Postal2)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Postal2)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Emergency)
@@ -338,13 +392,12 @@
         <dd>
             @Html.DisplayFor(model => model.Emergency)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Relationship)
+            @Html.DisplayNameFor(model => model.Relationship1.RelationshipName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Relationship)
+            @Html.DisplayFor(model => model.Relationship1.RelationshipName)
         </dd>
 
         <dt>
@@ -358,6 +411,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { _ID = Model.ID }) |
+    @Html.ActionLink("回到列表", "List")|
+    @Html.ActionLink("在職證明", "Inservice", new { _ID = Model.ID })
 </p>

@@ -1,0 +1,110 @@
+﻿@model CGH.Models.CertificateContent
+
+@{
+    ViewBag.Title = "員工在職&離職&育嬰留職單 填寫表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>員工在職&離職&育嬰留職單 填寫表</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <link rel="stylesheet" href="~/jquery/jquery-ui.css" />
+
+
+    <script src="~/jquery/jquery-ui.js"></script>
+    <script src="~/jquery/datepicker-zh-TW.js"></script>
+    <script>
+        $(function () {
+            $("#EndDate").datepicker(
+                {
+                    changeMonth: true,
+                    changeYear: true
+                }
+            );
+
+        });
+        $(function () {
+            $("#StartDate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+        }); </script>
+<div class="form-horizontal">
+    <h4>CertificateContent</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+            @Html.LabelFor(model => model.ContentNO, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ContentNO, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.ContentNO } })
+            
+            @Html.ValidationMessageFor(model => model.ContentNO, "", new { @class = "text-danger" })
+        </div>
+        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @{ var DDL = new CGH.Models.DropDownList();}
+            @Html.DropDownList("Category", DDL.GetCertificate() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MemberID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.MemberID, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contents, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Contents, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Contents, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

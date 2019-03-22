@@ -1,0 +1,31 @@
+﻿@model CGH.Models.HCmultiViewModel
+
+@{
+    ViewBag.Title = "InserviceVM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>InserviceVM</h2>
+
+<div>
+    <h4>HCmultiViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @foreach(var item in Model.CermuVM)
+        {
+            @Html.Label(item.ContentNO.ToString())<br>
+
+            foreach(var itemhr in Model.HrmuVM.Where(m => m.MemberID == item.MemberID))
+
+            {
+
+                @Html.Label(itemhr.Name.ToString()) <br>
+
+                }
+            }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

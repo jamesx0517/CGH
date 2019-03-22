@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.60.1\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -157,11 +160,48 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CGHController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="helper\ConvertToChinese.cs" />
+    <Compile Include="helper\DateTimeExtensions.cs" />
+    <Compile Include="helper\DecimalPoint.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\BuyCategory.cs" />
+    <Compile Include="Models\BuyerUnit.cs" />
+    <Compile Include="Models\DateTimeExtensions.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Repo\IProve.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Bool.cs" />
+    <Compile Include="Models\Certificate.cs" />
+    <Compile Include="Models\CertificateContent.cs" />
     <Compile Include="Models\CGHContext.cs" />
+    <Compile Include="Models\Dep.cs" />
+    <Compile Include="Models\Dep1.cs" />
+    <Compile Include="Models\Dep2.cs" />
+    <Compile Include="Models\Dep3.cs" />
+    <Compile Include="Models\Dep4.cs" />
+    <Compile Include="Models\DropDownList.cs" />
+    <Compile Include="Models\Graduation.cs" />
+    <Compile Include="Models\HCmultiViewModel.cs" />
+    <Compile Include="Models\Highestedu.cs" />
+    <Compile Include="Models\Hire.cs" />
     <Compile Include="Models\Hr.cs" />
+    <Compile Include="Models\HrCerViewModel.cs" />
+    <Compile Include="Models\Marriage.cs" />
+    <Compile Include="Models\Military.cs" />
+    <Compile Include="Models\Nationality.cs" />
+    <Compile Include="Models\Relationship.cs" />
+    <Compile Include="Models\Repo\Prove.cs" />
+    <Compile Include="Models\Send.cs" />
+    <Compile Include="Models\Sex.cs" />
+    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\Title.cs" />
+    <Compile Include="Models\UserOrderViewModel.cs" />
+    <Compile Include="Models\UsersTable.cs" />
+    <Compile Include="Models\Welfare.cs" />
+    <Compile Include="Models\WorkingHR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +213,18 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\logo.jpg" />
+    <Content Include="jquery\datepicker-zh-TW.js" />
+    <Content Include="jquery\image\ui-icons_444444_256x240.png" />
+    <Content Include="jquery\image\ui-icons_555555_256x240.png" />
+    <Content Include="jquery\image\ui-icons_777620_256x240.png" />
+    <Content Include="jquery\image\ui-icons_777777_256x240.png" />
+    <Content Include="jquery\image\ui-icons_cc0000_256x240.png" />
+    <Content Include="jquery\image\ui-icons_ffffff_256x240.png" />
+    <Content Include="jquery\jquery-1.12.4.js" />
+    <Content Include="jquery\jquery-ui.css" />
+    <Content Include="jquery\jquery-ui.js" />
+    <Content Include="jquery\style.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -196,7 +248,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -206,6 +260,22 @@
     <Content Include="Views\CGH\Create.cshtml" />
     <Content Include="Views\CGH\List.cshtml" />
     <Content Include="Views\CGH\Details.cshtml" />
+    <Content Include="Views\CGH\Edit.cshtml" />
+    <Content Include="Views\CGH\Index2.cshtml" />
+    <Content Include="Views\CGH\InserviceVM.cshtml" />
+    <Content Include="Views\CGH\Certificate.cshtml" />
+    <Content Include="Views\CGH\Inservice.cshtml" />
+    <Content Include="Views\CGH\CertificateList.cshtml" />
+    <Content Include="Views\CGH\InserviceVM-ok.cshtml" />
+    <Content Include="Views\CGH\LeaveVM.cshtml" />
+    <Content Include="Views\CGH\BabyCareVM.cshtml" />
+    <Content Include="Views\CGH\OrderList.cshtml" />
+    <Content Include="Views\CGH\OrderDetails.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\Index2.cshtml" />
+    <Content Include="Views\Login\Index3.cshtml" />
+    <Content Include="Views\CGH\OrderCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
