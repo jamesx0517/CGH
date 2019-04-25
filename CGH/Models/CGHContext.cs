@@ -278,7 +278,7 @@ namespace CGH.Models
             modelBuilder.Entity<Title>()
                 .HasMany(e => e.Hr)
                 .WithOptional(e => e.Title1)
-                .HasForeignKey(e => e.Title);
+                .HasForeignKey(e => e.TitleID);
 
             modelBuilder.Entity<UsersTable>()
                 .Property(e => e.UserID)

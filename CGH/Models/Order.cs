@@ -10,7 +10,7 @@
     public partial class Order
     {
         public int ID { get; set; }
-
+        [Display(Name = "訂單編號")]
         public int? OrderID { get; set; }
         [Display(Name = "單位")]
         public int? BuyerUnit { get; set; }
@@ -37,6 +37,8 @@
         [Display(Name = "經手人")]
         [StringLength(50)]
         public string UserID { get; set; }
+        [Display(Name = "單據作廢")]
+        public bool Cancel { get; set; }
 
         public virtual BuyCategory BuyCategory1 { get; set; }
 

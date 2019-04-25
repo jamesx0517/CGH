@@ -15,17 +15,18 @@ namespace CGH.Models
             using (CGHContext _db = new CGHContext())
             {
                 var hire = _db.Hires.ToList();
-                SelectList hirelistItems = new SelectList(hire, "HireID", "HireName");
+                SelectList hirelistItems = new SelectList(hire,"HireID","HireName");
                 return hirelistItems;
             }
         }
+
 
         public SelectList GetTitle()
         {
             using (CGHContext _db = new CGHContext())
             {
                 var title = _db.Titless.ToList();
-                SelectList titlelistItems = new SelectList(title, "TitleID", "TitleName");
+                SelectList titlelistItems = new SelectList(title,"TitleID","TitleName");
                 return titlelistItems;
             }
         }
@@ -119,6 +120,16 @@ namespace CGH.Models
             }
         }
 
+        public SelectList GetZone()
+        {
+            using (CGHContext _db = new CGHContext())
+            {
+                var Zone = _db.Addresss.ToList();
+                SelectList ZoneItems = new SelectList(Zone, "Zone", "Zone");
+                return ZoneItems;
+            }
+        }
+
         public SelectList GetMilitary()
         {
             using (CGHContext _db = new CGHContext())
@@ -143,10 +154,15 @@ namespace CGH.Models
         {
             using (CGHContext _db = new CGHContext())
             {
-                var add = _db.Addresss.Distinct().ToList();
-                var add2=add.Select(a => a.City);
-                //var add = (from a in _db.Addresss select a.City).Distinct().ToList();
-                SelectList AddItems = new SelectList(add2, add2, add2);
+              
+                var result = (from p in _db.Addresss
+                                orderby p.ID
+                              select p.City).ToList().Distinct();
+
+
+
+
+                SelectList AddItems = new SelectList(result);
                 return AddItems;
 
                
@@ -156,7 +172,7 @@ namespace CGH.Models
         {
             using (CGHContext _db = new CGHContext())
             {
-                var BuyerUnit = _db.BuyerUnits.ToList();
+                var BuyerUnit = _db.BuyerUnits.Where(u=>u.Enable.Equals(true)).ToList();
                 
                 
                 SelectList BuyerUnitItem = new SelectList(BuyerUnit, "BuyerUniID", "BuyerUnitName");
@@ -169,7 +185,7 @@ namespace CGH.Models
         {
             using (CGHContext _db = new CGHContext())
             {
-                var BuyCategory = _db.BuyCategorys.ToList();
+                var BuyCategory = _db.BuyCategorys.Where(u => u.Enable.Equals(true)).ToList();
 
 
                 SelectList BuyCategorysItem = new SelectList(BuyCategory, "BuyCategoryID", "BuyCategoryName");
@@ -183,11 +199,24 @@ namespace CGH.Models
         {
             using (CGHContext _db = new CGHContext())
             {
-                var Manager = _db.Hrs.Where(x=>x.Manager==true).ToList();
+                var Manager = _db.Hrs.Where(x=>x.Manager== true && x.Status == 1).ToList();
 
 
                 SelectList ManagerItem = new SelectList(Manager, "MemberID", "Name");
                 return ManagerItem;
+
+
+            }
+        }
+        public SelectList GetBoss()
+        {
+            using (CGHContext _db = new CGHContext())
+            {
+                var boss = _db.Hrs.Where(x => x.Manager == true ).ToList();
+
+
+                SelectList BossItem = new SelectList(boss, "MemberID", "Name");
+                return BossItem;
 
 
             }

@@ -4,37 +4,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    Layout = null;
-}
+<h2>首頁</h2>
+<div class="jumbotron">
+    <h1>人事管理系統</h1>
+    <p><a href="../CGH/Create" class="btn btn-primary btn-lg">新增員工 &raquo;</a></p>
+    <p><a href="../CGH/List" class="btn btn-primary btn-lg">員工總表 &raquo;</a></p>
+    <p>
+        <a href="../CGH/Certificate" class="btn btn-primary btn-lg">填寫人事單據 &raquo;</a>
+        <a href="../CGH/CertificateList" class="btn btn-primary btn-lg">在職證明列表 &raquo;</a>
+        <a href="../CGH/LeaveList" class="btn btn-primary btn-lg">離職證明列表 &raquo;</a>
+        <a href="../CGH/BabyList" class="btn btn-primary btn-lg">育嬰假證明列表 &raquo;</a>
+    </p>
+</div>
 
-<!DOCTYPE html>
+<div class="jumbotron">
+    <h1>收據開立</h1>
+    <p><a href="../Order/OrderCreate" class="btn btn-primary btn-lg">收據開立 &raquo;</a></p>
+    <p><a href="../Order/OrderList" class="btn btn-primary btn-lg">收據列表 &raquo;</a></p>
+    <p>
+        <a href="../Order/CategoryList" class="btn btn-primary btn-lg">分類列表 &raquo;</a>
+        <a href="../Order/UnitList" class="btn btn-primary btn-lg">單位列表 &raquo;</a>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index2（登入成功，才能看見）</title>
-</head>
-<body bgcolor="green">
-    <div>
-
-        <font color="white">
-            <h3>Index2（登入成功，才能看見）</h3>
-        </font>
-
-        <font color="yellow">
-            <h3>Index2（登入成功，才能看見）</h3>
-        </font>
-
-        <font color="white">
-            <h3>Index2（登入成功，才能看見）</h3>
-            <br /><br />
-
-            @Html.ActionLink("開立收據", "OrderCreate","CGH")
-
-            ...... @Html.ActionLink("登出（LogOut）", "LogOut")
-        </font>
-
-    </div>
-</body>
-</html>
+    </p>
+</div>

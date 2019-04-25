@@ -50,6 +50,9 @@ namespace CGH.Models
         [Display(Name = "試用期滿")]
         public bool Probation { get; set; }
 
+        [Display(Name = "試用期滿日")]
+        public DateTime? ProbationDate { get; set; }
+
         [Display(Name = "福利委員")]
         public int? Welfare { get; set; }
 
@@ -60,12 +63,13 @@ namespace CGH.Models
         public int? Hire { get; set; }
 
         [StringLength(10)]
+    
         [Display(Name = "部門")]
         public string Dep { get; set; }
 
         [Display(Name = "職稱")]
         [StringLength(50)]
-        public string Title { get; set; }
+        public string TitleID { get; set; }
 
         [Display(Name = "直屬長官")]
         [StringLength(50)]
@@ -133,22 +137,27 @@ namespace CGH.Models
         public string HomePhone { get; set; }
 
         [Display(Name = "執行扣計算")]
-        public bool Method { get; set; }
+        public bool? Method { get; set; }
 
         [Display(Name = "憑單填發方式")]
         public int? Send { get; set; }
+
+        [Display(Name = "縣市")]
+        public string City1 { get; set; }
 
         [Display(Name = "設籍地址")]
         public string Address1 { get; set; }
 
         [Display(Name = "郵遞區號")]
-        public int? Postal1 { get; set; }
+        public string Postal1 { get; set; }
 
+        [Display(Name = "縣市")]
+        public string City2 { get; set; }
         [Display(Name = "聯絡地址")]
         public string Address2 { get; set; }
 
         [Display(Name = "聯絡地址郵遞區號")]
-        public int? Postal2 { get; set; }
+        public string Postal2 { get; set; }
 
         [Display(Name = "緊急聯絡人")]
         [StringLength(10)]

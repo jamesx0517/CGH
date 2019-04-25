@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Web.Security;
 namespace CGH.Controllers
 {
+    [Authorize(Roles = "999")]
     public class CGHController : Controller
     {
         private CGHContext _db = new CGHContext();
@@ -51,6 +52,47 @@ namespace CGH.Controllers
 
 
         }
+        public ActionResult BabyList()
+        {
+            //第一種寫法：  //*** 查詢結果是一個 IQueryable *******************************************
+            IQueryable<CertificateContent> ListAll = from _CerContent in _db.CertificateContents
+                                                     where _CerContent.Category == 3
+                                                     select _CerContent;
+
+
+            if (ListAll == null)
+            {   // 找不到這一筆記錄
+                return HttpNotFound();
+            }
+            else
+            {
+                return View(ListAll.ToList());
+                // 直到程式的最後，把查詢結果 IQueryable呼叫.ToList()時，上面那一段LINQ才會真正被執行！
+            }
+
+
+        }
+        public ActionResult LeaveList()
+        {
+            //第一種寫法：  //*** 查詢結果是一個 IQueryable *******************************************
+            IQueryable<CertificateContent> ListAll = from _CerContent in _db.CertificateContents
+                                                     where _CerContent.Category == 2
+                                                     select _CerContent;
+
+
+            if (ListAll == null)
+            {   // 找不到這一筆記錄
+                return HttpNotFound();
+            }
+            else
+            {
+                return View(ListAll.ToList());
+                // 直到程式的最後，把查詢結果 IQueryable呼叫.ToList()時，上面那一段LINQ才會真正被執行！
+            }
+
+
+        }
+
         public ActionResult Certificate()
         {  
             var last = from _c in _db.CertificateContents
@@ -217,79 +259,123 @@ namespace CGH.Controllers
             //return sb.ToString();   // 自己測試用的
         }
 
+        [HttpPost]
+        public ActionResult GetPostal(string id)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();   // 需要 System.Text命名空間
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                string i = id;
+                var result = _db.Addresss.Where(u => u.City == i);
+
+                //// 注意！如果後面不加上 .AsEnumerable()，就會報錯！
+                //// 錯誤訊息 - LINQ to Entities 無法辨識方法 'Int32 Parse(System.String)' 方法，而且這個方法無法轉譯成存放區運算式。
+                //foreach (var r in result.AsEnumerable())
+                //{   //                           *******************
+                foreach (var r in result)   // 2018/8/13註解： 沒這一段也正常
+                {   // 組合字串，此結果將都丟往檢視畫面上，做下拉式選單的「子選項」
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>",
+                                       r.Zone,
+                                       r.Zone);
+                }
+            }
+            return Content(sb.ToString());    // 傳回一段字串。 只有下拉式選單裡面的 各種<option>子選項
+            //return sb.ToString();   // 自己測試用的
+        }
+
         [HttpPost, ActionName("Create")]   // 把下面的動作名稱，改成 CreateConfirm 試試看？
         [ValidateAntiForgeryToken]   // 避免CSRF攻擊
         public ActionResult Create(Hr _hr)
         {
-            if ((_hr != null) && (ModelState.IsValid))
-            // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
+            using (SqlConnection Conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["CGH"].ConnectionString))
             {
 
-                _db.Hrs.Add(_hr);
-                _db.SaveChanges();
-                return RedirectToAction("List");
-            }
-            else
-            {   // 搭配 ModelState.IsValid，如果驗證沒過，就出現錯誤訊息。
-                ModelState.AddModelError("Value1", " 自訂錯誤訊息(1) ");   // 第一個輸入值是 key，第二個是錯誤訊息（字串）
-                ModelState.AddModelError("Value2", " 自訂錯誤訊息(2) ");
-                return View();   // 將錯誤訊息，返回並呈現在「新增」的檢視畫面上
+                Conn.Open();
+                if ((_hr != null) && (ModelState.IsValid))
+                // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
+                {
+                    string sqlstr = "INSERT INTO [Hr] (	[MemberID],[Status],[Name],[IDcardNO],[Birthday],[Nationality],[StartDate],[Labor],[Hire],[Dep],[TitleID],[Boss],[Manager],[Remarks],[Marriage],[Blood],[Sex],[Height],[Weight],[Military],[MEdate],[Birthplace],[Email],[MobilePhone],[HomePhone],[City1],[Address1],[Postal1],[City2],[Address2],[Postal2],[Emergency],[Relationship],[Ephone],[Highestedu],[Graduation])";
+                    sqlstr += " VALUES (@MemberID,@Status,@Name,@IDcardNO,@Birthday,@Nationality,@StartDate,@Labor,@Hire,@Dep,@TitleID,@Boss,@Manager,@Remarks,@Marriage,@Blood,@Sex,@Height,@Weight,@Military,@MEdate,@Birthplace,@Email,@MobilePhone,@HomePhone,@City1,@Address1,@Postal1,@City2,@Address2,@Postal2,@Emergency,@Relationship,@Ephone,@Highestedu,@Graduation)";
+                    int affectedRows = Conn.Execute(sqlstr, new
+                    {
+                        MemberID = _hr.MemberID,
+                        Status = _hr.Status,
+                        Name = _hr.Name,
+                        IDcardNO = _hr.IDcardNO,
+                        Birthday = _hr.Birthday,
+                        Nationality = _hr.Nationality,
+                        StartDate = _hr.StartDate,
+                        Labor = _hr.Labor,
+                        Hire = _hr.Hire,
+                        Dep = _hr.Dep,
+                        TitleID = _hr.TitleID,
+                        Boss = _hr.Boss,
+                        Manager = _hr.Manager,
+                        Remarks = _hr.Remarks,
+                        Marriage = _hr.Marriage,
+                        Blood = _hr.Blood,
+                        Sex = _hr.Sex,
+                        Height = _hr.Height,
+                        Weight = _hr.Weight,
+                        Military = _hr.Military,
+                        MEdate = _hr.MEdate,
+                        Birthplace = _hr.Birthplace,
+                        Email = _hr.Email,
+                        MobilePhone = _hr.MobilePhone,
+                        HomePhone = _hr.HomePhone,
+                        City1=_hr.City1,
+                        Address1 = _hr.Address1,
+                        Postal1 = _hr.Postal1,
+                        City2=_hr.City2,
+                        Address2 = _hr.Address2,
+                        Postal2 = _hr.Postal2,
+                        Emergency = _hr.Emergency,
+                        Relationship = _hr.Relationship,
+                        Ephone = _hr.Ephone,
+                        Highestedu = _hr.Highestedu,
+                        Graduation = _hr.Graduation
+
+
+                    });
+
+
+                    return RedirectToAction("List");
+                }
+              
+                else
+                {   // 搭配 ModelState.IsValid，如果驗證沒過，就出現錯誤訊息。
+                    ModelState.AddModelError("Value1", " 自訂錯誤訊息(1) ");   // 第一個輸入值是 key，第二個是錯誤訊息（字串）
+                    ModelState.AddModelError("Value2", " 自訂錯誤訊息(2) ");
+                    return View();   // 將錯誤訊息，返回並呈現在「新增」的檢視畫面上
+                }
             }
         }
 
-        public ActionResult List()
+        public ActionResult List(Hr _hr)
         {
             //第一種寫法：  //*** 查詢結果是一個 IQueryable *******************************************
-            IQueryable<Hr> ListAll = from _userTable in _db.Hrs /*where _userTable.Status==*/
-                                     select _userTable;
+            IQueryable<Hr> ListAll = from _List in _db.Hrs
+                                     select _List;
+            // 從畫面上，輸入的第一個搜尋條件。  姓名。
 
-            // 或是寫成
-            //var ListAll = from m in _db.UserTables
-            //                   select m;
-            //翻譯後的SQL指令：SELECT [Extent1].[UserId] AS[UserId], 
-            //    [Extent1].[UserName] AS[UserName], 
-            //    [Extent1].[UserSex] AS[UserSex], 
-            //    [Extent1].[UserBirthDay] AS[UserBirthDay], 
-            //    [Extent1].[UserMobilePhone] AS[UserMobilePhone]
-            //FROM[dbo].[UserTable] AS[Extent1]
-
-            //*** 使用 IQueryable的好處是什麼？？************************************
-            // The method uses "LINQ to Entities" to specify the column to sort by.The code creates an IQueryable variable 
-            // before the switch statement, modifies it in the switch statement, and calls the ".ToList()" method after the 
-            // switch statement.When you create and modify IQueryable variables, no query is sent to the database. 
-            //
-            // The query is not executed until you convert the IQueryable object into a collection by calling a method such as ".ToList()".
-            // （直到程式的最後，你把查詢結果 IQueryable，呼叫.ToList()時，這段LINQ才會真正被執行！）
-            // Therefore, this code results in a single query that is not executed until the return View statement.
-
-            // (1) http://blog.darkthread.net/post-2012-10-23-iqueryable-experiment.aspx
-            //......發現 IQueryable<T> 是在 Server 端作過濾, 再將結果傳回 Client 端, 故若為資料庫存取, 應採用 IQueryable<T>
-            // (2) http://jasper-it.blogspot.tw/2015/01/c-ienumerable-ienumerator.html
-            //......在資料庫相關的環境下, 用 IQueryable<T> 的效能會比 IEnumerable< T > 來得好.
-            //*****************************************************************************
-
-            if (ListAll == null)
-            {   // 找不到這一筆記錄
-                return HttpNotFound();
-            }
-            else
+            string uStatus = _hr.Status.ToString();
+            
+            if (!string.IsNullOrWhiteSpace(uStatus) )
             {
-                return View(ListAll.ToList());
-                // 直到程式的最後，把查詢結果 IQueryable呼叫.ToList()時，上面那一段LINQ才會真正被執行！
+
+                ListAll = ListAll.Where(s => s.Status == _hr.Status );
             }
 
-            ////第二種寫法：
-            //if (_db.UserTables == null)
-            //{   // 找不到任何記錄
-            //    return HttpNotFound();
-            //// return Content("抱歉！找不到！");
-            //}
-            //else
-            //{
-            //    return View(_db.UserTables.ToList());   //直接把 UserTables的全部內容 列出來
-            //    // 翻譯成SQL指令的成果，跟第一種方法相同。
-            //}
+            if (!string.IsNullOrWhiteSpace(_hr.Dep))
+            {
+                ListAll = ListAll.Where(s => s.Dep.Contains(_hr.Dep));
+                //                                                                      /
+            }
+            return View("List", ListAll);
+
+
         }
+
         public ActionResult Details(int? _ID)
         {
             // 如果沒有修改 /App_Start/RouteConfig.cs，網址輸入 http://xxxxxx/UserDB/Details/2 會報錯！ 
@@ -298,50 +384,43 @@ namespace CGH.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
-            //// 第一種寫法：========================================
-            ////var ListOne = from _userTable in _db.UserTables
-            ////              where _userTable.UserId == _ID
-            ////              select _userTable;
-            ////也可以寫成下面這樣：
-            //var ListOne = from m in _db.UserTables
-            //              where m.UserId == _ID
-            //              select m;
-            //// 翻譯成SQL指令的結果：SELECT TOP (1) [Extent1].[Id] AS[Id],     [Extent1].[ModelHash] AS[ModelHash]
-            ////                                        FROM[dbo].[EdmMetadata] AS[Extent1]
-            ////                                        ORDER BY[Extent1].[Id] DESC
-
-            //if (ListOne == null)
-            //{    // 找不到這一筆記錄
-            //    return HttpNotFound();
-            //}
-            //else   {
-            //    return View(ListOne.FirstOrDefault());
-            //}
-
-            //// 第二種寫法： 透過 .Where() 函數=============================
-            //var ListOne2 = _db.UserTables.Where(x => x.UserId == _ID);
-            //if (ListOne2 == null)
-            //{    // 找不到這一筆記錄
-            //    return HttpNotFound();
-            //}
-            //else  {
-            //    return View(ListOne2.FirstOrDefault());
-            //    // 翻譯成SQL指令的結果，同上（第一種方法）。
-            //}
-
-            //// 第三種寫法： 透過 .FirstOrDefault() 函數=========================
-            //var ListOne3 = _db.UserTables.FirstOrDefault(b => b.UserId == _ID);
-            //// 翻譯成SQL指令的結果，同上（第一種方法）。
-            //if (ListOne3 == null)
-            //{    // 找不到這一筆記錄
-            //    return HttpNotFound();
-            //}
-            //else   {
-            //    return View(ListOne3);
-            //}
+            
 
             // 第四種寫法：透過 .Find() 函數
             Hr ut = _db.Hrs.Find(_ID);    // 翻譯成SQL指令的結果，同上（第一種方法）
+            //如果有老闆
+            if (!string.IsNullOrEmpty(ut.Boss))
+            {
+
+                var BossName = from _hr in _db.Hrs
+                               where _hr.MemberID == ut.Boss
+                               select _hr.Name;
+                ViewBag.BossName = BossName.FirstOrDefault().ToString();
+            }
+            else
+            {
+                ViewBag.BossName = "";
+            }
+         DateTime Today = DateTime.Now;
+            var age = CalculationDate.AGE(ut.Birthday, Today);
+            ViewBag.age = age;
+            //在職
+            if (ut.Status != 2)
+            {
+
+                var service = CalculationDate.Seniority(ut.StartDate,Today);
+                ViewBag.service = service;
+
+            }
+            else
+            {
+                var service = CalculationDate.Seniority(ut.StartDate, ut.EndDate);
+                ViewBag.service = service;
+
+            }
+
+
+
             if (ut == null)
             {   // 找不到這一筆記錄
                 return HttpNotFound();
@@ -371,6 +450,81 @@ namespace CGH.Controllers
                 return View(ut);
             }
         }
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Hr _userTable)
+        {   // 參考資料 http://blog.kkbruce.net/2011/10/aspnet-mvc-model-binding6.html
+            if (_userTable == null)
+            {   // 沒有輸入內容，就會報錯 - Bad Request
+                return Content(" *** 最前端失敗！！*** ");/*new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest)*/;
+            }
+
+            if (ModelState.IsValid)   // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
+            {
+                //_db.Entry(_userTable).State = System.Data.Entity.EntityState.Modified;  //確認被修改（狀態：Modified）
+                //_db.SaveChanges();
+
+                // 第二種寫法：========================================= (start)
+
+                //使用上方 Details動作的程式，先列出這一筆的內容，給使用者確認
+                
+               Hr ut = _db.Hrs.Find(_userTable.ID); 
+
+                if (ut == null)
+                {   // 找不到這一筆記錄
+                    return Content(" *** 二階段失敗！！*** ");
+                }
+                else
+                {
+
+                    
+                    ut.Name = _userTable.Name;
+                    ut.IDcardNO = _userTable.IDcardNO;
+                    ut.Birthday = _userTable.Birthday;
+                    ut.Nationality = _userTable.Nationality;
+                    ut.StartDate = _userTable.StartDate;
+                    ut.Labor = _userTable.Labor;
+                    ut.Hire = _userTable.Hire;
+                    ut.Dep = _userTable.Dep;
+                    ut.TitleID = _userTable.TitleID;
+                    ut.Boss = _userTable.Boss;
+                    ut.Manager = _userTable.Manager;
+                    ut.Remarks = _userTable.Remarks;
+                    ut.Marriage = _userTable.Marriage;
+                    ut.Blood = _userTable.Blood;
+                    ut.Sex = _userTable.Sex;
+                    ut.Height = _userTable.Height;
+                    ut.Weight = _userTable.Weight;
+                    ut.Military = _userTable.Military;
+                    ut.MEdate = _userTable.MEdate;
+                    ut.Birthplace = _userTable.Birthplace;
+                    ut.Email = _userTable.Email;
+                    ut.MobilePhone = _userTable.MobilePhone;
+                    ut.HomePhone = _userTable.HomePhone;
+                    ut.Address1 = _userTable.Address1;
+                    ut.Postal1 = _userTable.Postal1;
+                    ut.Address2 = _userTable.Address2;
+                    ut.Postal2 = _userTable.Postal2;
+                    ut.Emergency = _userTable.Emergency;
+                    ut.Relationship = _userTable.Relationship;
+                    ut.Ephone = _userTable.Ephone;
+                    ut.Highestedu = _userTable.Highestedu;
+                    ut.Graduation = _userTable.Graduation;
+                    _db.SaveChanges();   // 回寫資料庫（進行修改）
+                }
+
+
+
+                //return Content(" 更新一筆記錄，成功！");    // 更新成功後，出現訊息（字串）。
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return View(_userTable);  // 若沒有修改成功，則列出原本畫面
+                //return Content(" *** 更新失敗！！*** "); 
+            }
+        }
+
 
         ////== 修改（更新），回寫資料庫 #1 ============ 注意！這裡的輸入值是一個 UserTable
         //[HttpPost]
@@ -422,122 +576,133 @@ namespace CGH.Controllers
         //        return View(_hr);  // 若沒有修改成功，則列出原本畫面
         //        //return Content(" *** 更新失敗！！*** "); 
         //    }
-        public ActionResult OrderList()
-        {
+        //public ActionResult OrderList()
+        //{
 
-            IQueryable<Order> ListAll = from _OrderTable in _db.Orders /*where _userTable.Status==*/
-                                        select _OrderTable;
-
-
-
-            if (ListAll == null)
-            {   // 找不到這一筆記錄
-                return HttpNotFound();
-            }
-            else
-            {
-                return View(ListAll.ToList());
-
-            }
-
-        }
-        public ActionResult OrderDetails(int? _ID)
-        {
-
-            if (_ID == null || _ID.HasValue == false)
-            {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
-            }
-
-
-            Order ut = _db.Orders.Find(_ID);
-            if (ut == null)
-            {   // 找不到這一筆記錄
-                return HttpNotFound();
-            }
-            else
-            {
-                return View(ut);
-            }
-        }
-        [Authorize]
-        public ActionResult OrderCreate()
-        {
-            
-            //   var Today = DateTimeExtensions.ToFullTaiwanDate(DateTime.Now).ToString();
-            //var OrderID1 = from _c in _db.Orders
-            //           orderby _c.OrderID descending
-            //           select _c.OrderID;
-            //var OrderID2 = OrderID1.ToString();
-            //var list = from _o in _db.Orders
-            //           where _o.OrderID.Contains('1')
-            //           select _o.OrderID;
-
-            //ViewBag.ContentNO = list.FirstOrDefault() ;
-            return View();
-            //Contains
-        }
-        [HttpPost, ActionName("OrderCreate")]   // 把下面的動作名稱，改成 CreateConfirm 試試看？
-        [ValidateAntiForgeryToken]   // 避免CSRF攻擊
-        public ActionResult OrderCreate(Order _order)
-        {
-            using (SqlConnection Conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["CGH"].ConnectionString))
-            {
-
-                Conn.Open();
-                var UserIDx = HttpContext.User.Identity.Name;
-                //日期有內容
-                if ((_order.StartDate.ToString() != "0001/1/1 上午 12:00:00")&& (_order.EndDate.ToString() != "0001/1/1 上午 12:00:00"))
-                {
-
-                    string sqlstr = "INSERT INTO [Order] ([OrderID],[BuyerUnit],[BuyerName],[Category],[Quantity],[Money],[StartDate],[EndDate],[Remark],[UserID]) ";
-                    sqlstr += " VALUES (@OrderID,@BuyerUnit,@BuyerName,@Category,@Quantity,@Money,@StartDate,@EndDate,@Remark,@UserID)";
-
-                    _order.UserID = UserIDx;
-                    int affectedRows = Conn.Execute(sqlstr, new
-                    { 
-                    
-                         OrderID = _order.OrderID,
-                        BuyerUnit = _order.BuyerUnit,
-                        BuyerName = _order.BuyerName,
-                        Category = _order.Category,
-                        Quantity = _order.Quantity,
-                        Money = _order.Money,
-                        StartDate = _order.StartDate,
-                        EndDate=_order.EndDate,
-                        Remark = _order.Remark,
-                        UserID = _order.UserID
-                });
-
-                }
-                else
-                {
-                    string sqlstr = "INSERT INTO [Order] ([OrderID],[BuyerUnit],[BuyerName],[Category],[Quantity],[Money],[Remark],[UserID]) ";
-                    sqlstr += " VALUES (@OrderID,@BuyerUnit,@BuyerName,@Category,@Quantity,@Money,@Remark,@UserID)";
-
-                    _order.UserID = UserIDx;
-                    int affectedRows = Conn.Execute(sqlstr, new
-                    {   
-                        OrderID = _order.OrderID,
-                        BuyerUnit = _order.BuyerUnit,
-                        BuyerName = _order.BuyerName,
-                        Category = _order.Category,
-                        Quantity = _order.Quantity,
-                        Money = _order.Money,
-
-                        Remark = _order.Remark,
-                        UserID = _order.UserID
-                    });
+        //    IQueryable<Order> ListAll = from _OrderTable in _db.Orders /*where _userTable.Status==
+        //                                select _OrderTable;
 
 
 
-                }
-                return RedirectToAction("List");
+        //    if (ListAll == null)
+        //    {   // 找不到這一筆記錄
+        //        return HttpNotFound();
+        //    }
+        //    else
+        //    {
+        //        return View(ListAll.ToList());
 
-            }
+        //    }
+
+        //}
+        //public ActionResult OrderDetails(int? _ID)
+        //{
+
+        //    if (_ID == null || _ID.HasValue == false)
+        //    {
+        //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+        //    }
 
 
-        }
+        //    Order ut = _db.Orders.Find(_ID);
+        //    if (ut == null)
+        //    {   // 找不到這一筆記錄
+        //        return HttpNotFound();
+        //    }
+        //    else
+        //    {
+        //        return View(ut);
+        //    }
+        //}
+        //[Authorize]
+        //public ActionResult OrderCreate()
+        //{
+        //    //取出今日年月
+        //    var Today = DateTimeExtensions.ToFullTaiwanDate(DateTime.Now).ToString();
+        //    //搜尋最後一筆訂單編號
+        //    var OrderID1 = from _c in _db.Orders
+        //                   orderby _c.OrderID descending
+        //                   select _c.OrderID;
+        //    //將訂單變號轉換為string
+        //    string OrderID2 = OrderID1.FirstOrDefault().ToString();
+        //    //使用關鍵字"今日年月"搜尋訂單編號
+        //    var list = from _o in _db.Orders
+        //               where OrderID2.Contains(Today)
+        //               select OrderID2;
+        //    //如果搜尋結果為0
+        //    if (list.FirstOrDefault() == null)
+        //    {
+        //        ViewBag.ContentNO = Today + "001";
+
+        //    }
+        //    else
+        //    {
+        //        ViewBag.ContentNO = int.Parse(list.FirstOrDefault()) + 1;
+        //    }
+        //    return View();
+        //    //Contains
+        //}
+        //[HttpPost, ActionName("OrderCreate")]   // 把下面的動作名稱，改成 CreateConfirm 試試看？
+        //[ValidateAntiForgeryToken]   // 避免CSRF攻擊
+        //public ActionResult OrderCreate(Order _order)
+        //{
+        //    using (SqlConnection Conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["CGH"].ConnectionString))
+        //    {
+
+        //        Conn.Open();
+        //        var UserIDx = HttpContext.User.Identity.Name;
+        //        //日期有內容
+        //        if ((_order.StartDate.ToString() != "0001/1/1 上午 12:00:00")&& (_order.EndDate.ToString() != "0001/1/1 上午 12:00:00"))
+        //        {
+
+        //            string sqlstr = "INSERT INTO [Order] ([OrderID],[BuyerUnit],[BuyerName],[Category],[Quantity],[Money],[StartDate],[EndDate],[Remark],[UserID]) ";
+        //            sqlstr += " VALUES (@OrderID,@BuyerUnit,@BuyerName,@Category,@Quantity,@Money,@StartDate,@EndDate,@Remark,@UserID)";
+
+        //            _order.UserID = UserIDx;
+        //            int affectedRows = Conn.Execute(sqlstr, new
+        //            { 
+
+        //                 OrderID = _order.OrderID,
+        //                BuyerUnit = _order.BuyerUnit,
+        //                BuyerName = _order.BuyerName,
+        //                Category = _order.Category,
+        //                Quantity = _order.Quantity,
+        //                Money = _order.Money,
+        //                StartDate = _order.StartDate,
+        //                EndDate=_order.EndDate,
+        //                Remark = _order.Remark,
+        //                UserID = _order.UserID
+        //        });
+
+        //        }
+        //        else
+        //        {//日期無內容
+        //            string sqlstr = "INSERT INTO [Order] ([OrderID],[BuyerUnit],[BuyerName],[Category],[Quantity],[Money],[Remark],[UserID]) ";
+        //            sqlstr += " VALUES (@OrderID,@BuyerUnit,@BuyerName,@Category,@Quantity,@Money,@Remark,@UserID)";
+
+        //            _order.UserID = UserIDx;
+        //            int affectedRows = Conn.Execute(sqlstr, new
+        //            {   
+        //                OrderID = _order.OrderID,
+        //                BuyerUnit = _order.BuyerUnit,
+        //                BuyerName = _order.BuyerName,
+        //                Category = _order.Category,
+        //                Quantity = _order.Quantity,
+        //                Money = _order.Money,
+
+        //                Remark = _order.Remark,
+        //                UserID = _order.UserID
+        //            });
+
+
+
+        //        }
+        //        return RedirectToAction("List");
+
+        //    }
+
+
+        //}
     }
 }
     

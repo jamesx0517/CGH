@@ -1,0 +1,162 @@
+﻿@model CGH.Models.Order
+@using CGH.helper
+@{
+    ViewBag.Title = "OrderDetails";
+    Layout = null;
+}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script>
+        function printHtml(html) {
+            var bodyHtml = document.body.innerHTML;
+            document.body.innerHTML = html;
+            window.print();
+            document.body.innerHTML = bodyHtml;
+            window.location.reload(); //列印輸出後更新頁面
+        }
+        function onprint() {
+            //去除超連結設置
+            $('a').each(function (index) {
+                $(this).replaceWith($(this).html());
+            });
+            var html = $("#printArea").html();
+            printHtml(html);
+        }</script>
+</head>
+<div id="printArea" style="width: 100%; text-align: left;">
+    <div class="container body-content">
+        <div style=font-size:20px;font-family:DFKai-sb;>
+            <table align="left" border="1" cellspacing="0">
+                <tr><td colspan="2" align="center">重光醫院</td></tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        本收據<br>
+                        印花稅總繳
+                    </td>
+                </tr>
+                <tr>
+                    <td>苗栗縣</td>
+                    <td>負責總繳人：陳忠信</td>
+                </tr>
+            </table>
+
+            <table align="center">
+                <td>收　　　據</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;</td>
+            </table>
+
+            <table align="right">
+                <td><font size="3"> 單據號碼：</font></td>
+                <td><font size="3">@Html.DisplayFor(model => model.OrderID)</font></td>
+            </table>
+
+            <table align="center">
+
+                <td align="center">
+                    @Html.ToFullTaiwanDate(Model.BillingDate)
+                </td>
+
+            </table>
+            <br><br>
+            <table align="left">
+                <tr>
+                    <td>單位：</td>
+                    <td>@Html.DisplayFor(model => model.BuyerUnit1.BuyerUnitName)</td>
+                </tr>
+                <tr>
+                    <td>姓名：</td>
+                    <td>@Html.DisplayFor(model => model.BuyerName)</td>
+                </tr>
+            </table>
+            <table align="right" ">
+                <tr>
+                    <td rowspan="2">期間：</td>
+                    <td>自 @Html.ToFullTaiwanDate(Model.StartDate)</td>
+                </tr>
+                <td>至 @Html.ToFullTaiwanDate(Model.EndDate)</td>
+            </table>
+
+
+
+            <table border="1" width="100%" cellspacing="0">
+                <tr>
+                    <td width="25%" align="center">@Html.DisplayNameFor(model => model.Category)</td>
+                    <td align="center">@Html.DisplayNameFor(model => model.Quantity)</td>
+                    <td align="center">@Html.DisplayNameFor(model => model.Money)</td>
+                    <td align="center">@Html.DisplayNameFor(model => model.Remark)</td>
+                </tr>
+
+
+                <tr>
+                    <td align="center">
+                        @Html.DisplayFor(model => model.BuyCategory1.BuyCategoryName)
+                    </td>
+
+
+
+                    <td align="center">
+                        @Html.DisplayFor(model => model.Quantity)
+                    </td>
+
+
+
+                    <td align="center">
+                        @Html.Normalize(Model.Money)
+                    </td>
+
+                    <td align="center">
+                        @Html.DisplayFor(model => model.Remark)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" height="50" align="center">以下空白</td>
+                </tr>
+                <tr>
+                    <td colspan="4">新台幣：@Html.ConvertToChineseMoney(Model.Money)整</td>
+                </tr>
+                <tr>
+                    <td colspan="4"  height="100">
+                        名稱:重光醫院 負責人:陳忠信 統一編號:49616209<br>
+
+                        院址:苗栗縣頭份市中華路1039號 電話:037-668266~8
+                    </td>
+                </tr>
+            </table>
+
+            <table align="right">
+                <td>
+                    @Html.DisplayNameFor(model => model.UserID)：
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.UsersTable1.UserName)
+                </td>
+            </table>
+            <table>
+                <tr> <td><font size="1">附註</font></td><td><font size="1">1.本收據未蓋收費章者無效</font></td></tr>
+                <tr> <td></td><td><font size="1">2.扣繳所得10%請於次月10日前繳納</font></td></tr>
+                <tr> <td></td><td><font size="1">3.扣繳憑單請於次年2月底前寄達本院</font></td></tr>
+            </table>
+        </div>
+        </div>
+    </div>
+
+    <button type="button" id="btnPrint" onclick="onprint()" value="print" class="btn btn-info btn-block btn-lg"> 列印訂單</button>
+
+
+

@@ -20,13 +20,17 @@
 
         [Key]
         [StringLength(50)]
+        [Display(Name = "帳號")]
         public string UserID { get; set; }
 
         [Required]
         [StringLength(10)]
+        [Display(Name ="姓名")]
         public string UserName { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "密碼")]
         public string Password { get; set; }
 
         public int Rank { get; set; }

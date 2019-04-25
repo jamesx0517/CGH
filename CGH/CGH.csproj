@@ -161,10 +161,12 @@
     <Compile Include="Controllers\CGHController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="helper\ConvertToChinese.cs" />
     <Compile Include="helper\DateTimeExtensions.cs" />
     <Compile Include="helper\DecimalPoint.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\CalculationDate.cs" />
     <Compile Include="Models\BuyCategory.cs" />
     <Compile Include="Models\BuyerUnit.cs" />
     <Compile Include="Models\DateTimeExtensions.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Models\Repo\Prove.cs" />
     <Compile Include="Models\Send.cs" />
     <Compile Include="Models\Sex.cs" />
+    <Compile Include="Models\GetSHA1.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\Title.cs" />
     <Compile Include="Models\UserOrderViewModel.cs" />
@@ -269,16 +272,29 @@
     <Content Include="Views\CGH\InserviceVM-ok.cshtml" />
     <Content Include="Views\CGH\LeaveVM.cshtml" />
     <Content Include="Views\CGH\BabyCareVM.cshtml" />
-    <Content Include="Views\CGH\OrderList.cshtml" />
-    <Content Include="Views\CGH\OrderDetails.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Index2.cshtml" />
     <Content Include="Views\Login\Index3.cshtml" />
-    <Content Include="Views\CGH\OrderCreate.cshtml" />
+    <Content Include="Views\Order\OrderList.cshtml" />
+    <Content Include="Views\Order\OrderCreate.cshtml" />
+    <Content Include="Views\Order\OrderDetails.cshtml" />
+    <Content Include="Views\Order\UnitEdit.cshtml" />
+    <Content Include="Views\Order\UnitList.cshtml" />
+    <Content Include="Views\Order\UnitCreate.cshtml" />
+    <Content Include="Views\Order\CategoryList.cshtml" />
+    <Content Include="Views\Order\CategoryEdit.cshtml" />
+    <Content Include="Views\Order\CategoryCreate.cshtml" />
+    <Content Include="Views\CGH\Select.cshtml" />
+    <Content Include="Views\Login\Registered.cshtml" />
+    <Content Include="Views\CGH\BabyList.cshtml" />
+    <Content Include="Views\CGH\LeaveList.cshtml" />
+    <Content Include="Views\Login\LogOut.cshtml" />
+    <Content Include="Views\Order\OrderEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="LoginModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -1,11 +1,11 @@
 ﻿@model CGH.Models.UsersTable
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "系統登入";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Login</h2>
+<h2>系統登入</h2>
 
 
 @using (Html.BeginForm())
@@ -13,7 +13,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>UsersTable</h4>
+       
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -33,7 +33,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="登入" class="btn btn-default" />
+                <input type="submit" value="登入" class="btn btn-default" /> <br /> <a href="../Login/Registered" class="btn btn-primary btn-lg">>>沒有帳號請點我<<</a>
                 <br /><br />
                 @{
                     if (ViewData["ErrorMessage"] != null)
@@ -43,12 +43,12 @@
 
 
                     @*   //測試程式 .Split()，無意義！
-                        string str = "1";
-                        string[] A = str.Split(',');
-                        foreach (var a in A)
-                        {
-                            @Html.Raw(a.ToString());
-                        }*@
+            string str = "1";
+            string[] A = str.Split(',');
+            foreach (var a in A)
+            {
+                @Html.Raw(a.ToString());
+            }*@
 
                 }
             </div>

@@ -1,14 +1,11 @@
 ﻿@model CGH.Models.Hr
 
 @{
-    /**/
-
-    ViewBag.Title = "Create";
+    ViewBag.Title = "新增員工";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<head>
-</head>
-<h2>Create</h2>
+
+<h2>新增員工</h2>
 
 
 
@@ -18,8 +15,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     <link rel="stylesheet" href="~/jquery/jquery-ui.css" />
-
-
     <script src="~/jquery/jquery-ui.js"></script>
     <script src="~/jquery/datepicker-zh-TW.js"></script>
     <script>
@@ -56,8 +51,8 @@
                 {
                     changeMonth: true,
                     changeYear: true
-                }); 
-     
+                });
+
 
         });
 
@@ -77,6 +72,7 @@
         //上方，第一號下拉式選單，名為 DepartmentId
         //下方，第二號下拉式選單，名為 UserId  (以傳統HTML表單的寫法來做，<select>)
         $(document).ready(function () {
+
             $('#Dep1ID').change(function () {
             // 第一號下拉式選單若被點選，第二號就重新填入新的「子選項」。
 
@@ -112,7 +108,7 @@
                         }   // error end
                 });
 
-                  
+
                 $.ajax( {    // jQuery AJAX 參考資料 http://api.jquery.com/jquery.ajax/
                         url: "@Url.Content("~/CGH/GetDep")",   // 記得 URL網址 前後用雙引號（"）包起來
                         data: { id: userSelectId },  // 傳給上面URL網址的數值
@@ -197,7 +193,7 @@
 
 
              var user3SelectId = $.trim($('#Dep3ID option:selected').val());
-                
+
                 $('#Dep').empty();
             if (user3SelectId.length == 0) {
                 $('#Dep3ID').append($('<option></option>').val('').text('-= 請選擇 =-'));
@@ -229,11 +225,89 @@
 
             }
             });
+
+            $('#City1').change(function () {
+                // 第一號下拉式選單若被點選，第二號就重新填入新的「子選項」。
+
+                var PostalSelectId = $.trim($('#City1 option:selected').val());
+                $('#Postal1').empty();  // 清空第二號 下拉式選單
+
+                if (PostalSelectId.length == 0) {
+                    $('#Postal1').append($('<option></option>').val('').text('-= 請選擇 =-'));
+                }
+                else {
+                    $.ajax({    // jQuery AJAX 參考資料 http://api.jquery.com/jquery.ajax/
+                        url: "@Url.Content("~/CGH/GetPostal")",   // 記得 URL網址 前後用雙引號（"）包起來
+                        data: { id: PostalSelectId },  // 傳給上面URL網址的數值
+                        type: 'post',
+                        cache: false,
+                        async: false,
+                        dataType: 'html',   // 可改成 text
+                        success: function (data) {
+                            if (data.length > 0) {
+                                //*******************************************
+                                // 如果有傳回資料，就把資料 <option>放入 第二號下拉式選單底下，當成子選項。
+                                $('#Postal1').append(data);
+
+
+
+                                //*******************************************
+                            }
+                        },   // success end
+                        error: function () {
+                            alert('例外狀況，AJAX有問題～～');
+                            // AJAX Error 請看 https://stackoverflow.com/questions/12734714/jquery-ajax-error-handling-http-status-codes
+                        }   // error end
+                    });
+                }
+            });
+
+
+                    $('#City2').change(function () {
+                        // 第一號下拉式選單若被點選，第二號就重新填入新的「子選項」。
+
+                        var Postal2SelectId = $.trim($('#City2 option:selected').val());
+                        $('#Postal2').empty();  // 清空第二號 下拉式選單
+
+                        if (Postal2SelectId.length == 0) {
+                            $('#Postal2').append($('<option></option>').val('').text('-= 請選擇 =-'));
+                        }
+                        else {
+                            $.ajax({    // jQuery AJAX 參考資料 http://api.jquery.com/jquery.ajax/
+                                url: "@Url.Content("~/CGH/GetPostal")",   // 記得 URL網址 前後用雙引號（"）包起來
+                                data: { id: Postal2SelectId },  // 傳給上面URL網址的數值
+                                type: 'post',
+                                cache: false,
+                                async: false,
+                                dataType: 'html',   // 可改成 text
+                                success: function (data) {
+                                    if (data.length > 0) {
+                                        //*******************************************
+                                        // 如果有傳回資料，就把資料 <option>放入 第二號下拉式選單底下，當成子選項。
+                                        $('#Postal2').append(data);
+
+
+
+                                        //*******************************************
+                                    }
+                                },   // success end
+                                error: function () {
+                                    alert('例外狀況，AJAX有問題～～');
+                                    // AJAX Error 請看 https://stackoverflow.com/questions/12734714/jquery-ajax-error-handling-http-status-codes
+                                }   // error end
+                            });
+                        }
+                    });///city2 end
+            
+          
         });
+
+
     </script>
 
+
     <div class="form-horizontal">
-        <h4>Hr</h4>
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -284,16 +358,17 @@
             <div class="col-md-10">
                 @{var listitemNa = new List<SelectListItem>
 
-                                                                {
-                                                                  new SelectListItem{Text="本國",Value="1"},
-                                                                  new SelectListItem{Text="外僑",Value="2"},
+                                                                                                {
+                                                                                                  new SelectListItem{Text="本國",Value="1"},
+                                                                                                  new SelectListItem{Text="外僑",Value="2"},
 
 
-                                                                    };
+                                                                                                    };
                 }
                 @Html.DropDownList("Nationality", listitemNa, "請選擇", htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -319,14 +394,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Welfare, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("Welfare", DDL.GetWelfare() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
 
                 @Html.ValidationMessageFor(model => model.Welfare, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Labor, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -352,9 +427,9 @@
 
                 @{var listitemDEP = new List<SelectListItem>
 
-                              {
-                              new SelectListItem{Text="請選擇",Value=""},
-                          };
+                                                              {
+                                                              new SelectListItem{Text="請選擇",Value=""},
+                                                          };
 
                 }
                 <!-- **************************************************************************************** -->
@@ -362,7 +437,7 @@
 
                 @Html.DropDownList("Dep2ID", listitemDEP, new { @class = "form-control" })
                 @Html.DropDownList("Dep3ID", listitemDEP, new { @class = "form-control" })
-                
+
                 <select id="Dep" name="Dep" class="form-control"></select>
 
 
@@ -372,12 +447,12 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TitleID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
-                @Html.DropDownList("Title", DDL.GetTitle() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("TitleID", DDL.GetTitle() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
 
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.TitleID, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -385,7 +460,7 @@
             @Html.LabelFor(model => model.Boss, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("BOSS", DDL.GetManager() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
-                
+
                 @Html.ValidationMessageFor(model => model.Boss, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -398,37 +473,31 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Agent, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Agent, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Agent, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.WorkingHR, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("WorkingHR", DDL.GetWorkingHR() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.WorkingHR, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
+
+        @*<div class="form-group">
             @Html.LabelFor(model => model.PassPortID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PassPortID, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PassPortID, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Marriage, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -444,13 +513,13 @@
             <div class="col-md-10">
                 @{var listitemBlood = new List<SelectListItem>
 
-                                                            {
-                                                              new SelectListItem{Text="A",Value="1"},
-                                                              new SelectListItem{Text="B",Value="2"},
-                                                              new SelectListItem{Text="O",Value="3"},
-                                                              new SelectListItem{Text="AB",Value="4"},
+                                                                                            {
+                                                                                              new SelectListItem{Text="A",Value="1"},
+                                                                                              new SelectListItem{Text="B",Value="2"},
+                                                                                              new SelectListItem{Text="O",Value="3"},
+                                                                                              new SelectListItem{Text="AB",Value="4"},
 
-                                                                };
+                                                                                                };
                 }
                 @Html.DropDownList("Blood", listitemBlood, "請選擇", htmlAttributes: new { @class = "form-control" })
             </div>
@@ -461,11 +530,11 @@
             <div class="col-md-10">
                 @{var listitemSex = new List<SelectListItem>
 
-                                                        {
-                                                          new SelectListItem{Text="男",Value="1"},
-                                                          new SelectListItem{Text="女",Value="2"},
+                                                                                        {
+                                                                                          new SelectListItem{Text="男",Value="1"},
+                                                                                          new SelectListItem{Text="女",Value="2"},
 
-                                                            };
+                                                                                            };
                 }
                 @Html.DropDownList("Sex", listitemSex, "請選擇", htmlAttributes: new { @class = "form-control" })
             </div>
@@ -511,21 +580,21 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Retired, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Retired, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Retired, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Health, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Health, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Health, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.MEdate, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -567,15 +636,15 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Method, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Method, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Method, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Send, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
@@ -583,8 +652,24 @@
 
                 @Html.ValidationMessageFor(model => model.Send, "", new { @class = "text-danger" })
             </div>
+        </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.City1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownList("City1", DDL.GetAdd() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+
+            </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.Postal1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Postal1", listitemDEP, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Address1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -594,14 +679,29 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Postal1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-              
-                @Html.EditorFor(model => model.Postal1, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+            <div class="col-md-offset-2 col-md-10">
+                
+                同戶籍地址<input type="checkbox" onclick="OmitText()" id="checked" class="btn btn-default">
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.City2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownList("City2", DDL.GetAdd() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Postal2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Postal2", listitemDEP, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Address2, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -610,13 +710,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Postal2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Postal2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Postal2, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Emergency, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -644,17 +737,25 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
-}
+        }
 
-<div>
-    @Html.ActionLink("Back to List", "List")
-</div>
+        <div>
+            @Html.ActionLink("Back to List", "List")
+        </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }

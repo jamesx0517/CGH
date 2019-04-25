@@ -13,7 +13,7 @@
        
         [Key]
         public int ContentID { get; set; }
-        
+        [Display(Name = "單據號碼")]
         public int? ContentNO { get; set; }
         [Display(Name = "備註")]
         [StringLength(50)]

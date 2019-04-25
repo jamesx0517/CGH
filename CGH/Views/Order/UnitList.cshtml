@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CGH.Models.BuyerUnit>
+
+@{
+    ViewBag.Title = "購買單位列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>購買單位列表</h2>
+
+<p>
+    @Html.ActionLink("建立新單位", "UnitCreate")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BuyerUnitName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Enable)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyerUnitName)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Enable)
+        </td>
+        <td>
+            @Html.ActionLink("修改", "UnitEdit", new { _ID = item.BuyerUniID })
+
+        </td>
+    </tr>
+}
+
+</table>

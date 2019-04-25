@@ -1,5 +1,5 @@
 ﻿@model CGH.Models.Hr
-
+@using CGH.helper
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,36 +11,184 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <link rel="stylesheet" href="~/jquery/jquery-ui.css" />
+    <script src="~/jquery/jquery-ui.js"></script>
+    <script src="~/jquery/datepicker-zh-TW.js"></script>
+    <script>
+        $(function () {
+            $("#Birthday").datepicker(
+                {
+                    changeMonth: true,
+                    changeYear: true
+                }
+            );
+
+        });
+        $(function () {
+            $("#StartDate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+        });
+        $(function () {
+            $("#EndDate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+        });
+        $(function () {
+            $("#Retired").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+
+        });
+
+        $(function () {
+            $("#MEdate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+
+        });
+
+        $(document).ready(function () {
+   $('#City1').change(function () {
+                // 第一號下拉式選單若被點選，第二號就重新填入新的「子選項」。
+
+                var PostalSelectId = $.trim($('#City1 option:selected').val());
+                $('#Postal1').empty();  // 清空第二號 下拉式選單
+
+                if (PostalSelectId.length == 0) {
+                    $('#Postal1').append($('<option></option>').val('').text('-= 請選擇 =-'));
+                }
+                else {
+                    $.ajax({    // jQuery AJAX 參考資料 http://api.jquery.com/jquery.ajax/
+                        url: "@Url.Content("~/CGH/GetPostal")",   // 記得 URL網址 前後用雙引號（"）包起來
+                        data: { id: PostalSelectId },  // 傳給上面URL網址的數值
+                        type: 'post',
+                        cache: false,
+                        async: false,
+                        dataType: 'html',   // 可改成 text
+                        success: function (data) {
+                            if (data.length > 0) {
+                                //*******************************************
+                                // 如果有傳回資料，就把資料 <option>放入 第二號下拉式選單底下，當成子選項。
+                                $('#Postal1').append(data);
+
+
+
+                                //*******************************************
+                            }
+                        },   // success end
+                        error: function () {
+                            alert('例外狀況，AJAX有問題～～');
+                            // AJAX Error 請看 https://stackoverflow.com/questions/12734714/jquery-ajax-error-handling-http-status-codes
+                        }   // error end
+                    });
+                }
+            });
+
+            //function validate() {
+            //    var oncheck = document.getElementById('OmitText');
+            //    if (oncheck.checked) {
+
+            //        function OmitText() {
+            //            var City1 = document.getElementById('City1').value;
+            //            document.getElementById("City2").value = City1;
+
+            //            var Postal1 = document.getElementById('Postal1').value;
+            //            document.getElementById("Postal2").value = Postal1;
+
+            //            var Address1 = document.getElementById('Address1').value;
+            //            document.getElementById("Address2").value = Address1;
+            //        }
+
+            //    } else {
+                    $('#City2').change(function () {
+                        // 第一號下拉式選單若被點選，第二號就重新填入新的「子選項」。
+
+                        var Postal2SelectId = $.trim($('#City2 option:selected').val());
+                        $('#Postal2').empty();  // 清空第二號 下拉式選單
+
+                        if (Postal2SelectId.length == 0) {
+                            $('#Postal2').append($('<option></option>').val('').text('-= 請選擇 =-'));
+                        }
+                        else {
+                            $.ajax({    // jQuery AJAX 參考資料 http://api.jquery.com/jquery.ajax/
+                                url: "@Url.Content("~/CGH/GetPostal")",   // 記得 URL網址 前後用雙引號（"）包起來
+                                data: { id: Postal2SelectId },  // 傳給上面URL網址的數值
+                                type: 'post',
+                                cache: false,
+                                async: false,
+                                dataType: 'html',   // 可改成 text
+                                success: function (data) {
+                                    if (data.length > 0) {
+                                        //*******************************************
+                                        // 如果有傳回資料，就把資料 <option>放入 第二號下拉式選單底下，當成子選項。
+                                        $('#Postal2').append(data);
+
+
+
+                                        //*******************************************
+                                    }
+                                },   // success end
+                                error: function () {
+                                    alert('例外狀況，AJAX有問題～～');
+                                    // AJAX Error 請看 https://stackoverflow.com/questions/12734714/jquery-ajax-error-handling-http-status-codes
+                                }   // error end
+                            });
+                        }
+                    });///city2 end
+                //}//esle end
+            //}
+
+        });
+
+
+    </script>
+
+
+
+
     <div class="form-horizontal">
         <h4>Hr</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
 
+        @Html.HiddenFor(model => model.ID)
         <div class="form-group">
             @Html.LabelFor(model => model.MemberID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.MemberID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.MemberID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Pw, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Pw, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Pw, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.Status, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Status", null, htmlAttributes: new { @class = "form-control" })
+                @{ var DDL = new CGH.Models.DropDownList();}
+                @Html.DropDownList("Status", DDL.GetStatus() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
-        </div>*@
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -61,23 +209,36 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new
+           {
+               @class = "form-control",
+               @Value = Convert.ToDateTime(Model.Birthday).ToShortDateString()
+           }   }
+           )
                 @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Nationality, "Nationality", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Nationality", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                @{var listitemNa = new List<SelectListItem>
+
+                                                                                                    {
+                                                                                                      new SelectListItem{Text="本國",Value="1"},
+                                                                                                      new SelectListItem{Text="外僑",Value="2"},
+
+
+                                                                                                        };
+                }
+                @Html.DropDownList("Nationality", listitemNa, "請選擇", htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @Value = Convert.ToDateTime(Model.StartDate).ToShortDateString() } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -85,7 +246,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @Value = Convert.ToDateTime(Model.EndDate).ToShortDateString() } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -93,59 +254,59 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Probation, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Probation)
-                    @Html.ValidationMessageFor(model => model.Probation, "", new { @class = "text-danger" })
-                </div>
+                @Html.EditorFor(model => model.Probation, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Probation, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Welfare, "Welfare", htmlAttributes: new { @class = "control-label col-md-2" })
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.Welfare, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Welfare", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Welfare", DDL.GetWelfare() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+
                 @Html.ValidationMessageFor(model => model.Welfare, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Labor, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Labor)
-                    @Html.ValidationMessageFor(model => model.Labor, "", new { @class = "text-danger" })
-                </div>
+                @Html.EditorFor(model => model.Labor, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Labor, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Hire, "Hire", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Hire, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Hire", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.DropDownList("Hire", DDL.GetHire() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Hire, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Dep, "Dep", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Dep, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Dep", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.DropDownList("Dep", DDL.GetDep() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Dep, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, "Title", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TitleID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Title", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+
+                @Html.DropDownList("TitleID", DDL.GetTitle() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TitleID, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Boss, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Boss, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownList("Boss", DDL.GetManager() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+
                 @Html.ValidationMessageFor(model => model.Boss, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -153,66 +314,76 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Manager, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Manager)
-                    @Html.ValidationMessageFor(model => model.Manager, "", new { @class = "text-danger" })
-                </div>
+                @Html.EditorFor(model => model.Manager, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Manager, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Agent, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Agent, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Agent, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.WorkingHR, "WorkingHR", htmlAttributes: new { @class = "control-label col-md-2" })
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.WorkingHR, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("WorkingHR", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("WorkingHR", DDL.GetWorkingHR() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.WorkingHR, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
+
+        @*<div class="form-group">
             @Html.LabelFor(model => model.PassPortID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PassPortID, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PassPortID, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Marriage, "Marriage", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Marriage, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Marriage", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.DropDownList("Marriage", DDL.GetMarriage() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Marriage, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Blood, "Blood", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Blood, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Blood", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Blood, "", new { @class = "text-danger" })
+                @{var listitemBlood = new List<SelectListItem>
+
+                                                                                                {
+                                                                                                  new SelectListItem{Text="A",Value="1"},
+                                                                                                  new SelectListItem{Text="B",Value="2"},
+                                                                                                  new SelectListItem{Text="O",Value="3"},
+                                                                                                  new SelectListItem{Text="AB",Value="4"},
+                                                                                                  new SelectListItem{Text="無",Value="5"},
+
+                                                                                                    };
+                }
+                @Html.DropDownList("Blood", listitemBlood, "請選擇", htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Sex, "Sex", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Sex", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
+                @{var listitemSex = new List<SelectListItem>
+
+                                                                                            {
+                                                                                              new SelectListItem{Text="男",Value="1"},
+                                                                                              new SelectListItem{Text="女",Value="2"},
+
+                                                                                                };
+                }
+                @Html.DropDownList("Sex", listitemSex, "請選擇", htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
@@ -233,33 +404,51 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Military, "Military", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Highestedu, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Military", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Military, "", new { @class = "text-danger" })
+                @Html.DropDownList("Highestedu", DDL.GetHighestedu() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Highestedu, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Graduation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Graduation", DDL.GetGraduation() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Graduation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Military, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Military", DDL.GetMilitary() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Military, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Retired, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Retired, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Retired, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Health, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Health, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Health, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.MEdate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.MEdate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.MEdate, new { htmlAttributes = new { @class = "form-control", @Value = Convert.ToDateTime(Model.MEdate).ToShortDateString() } })
+
+
                 @Html.ValidationMessageFor(model => model.MEdate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -296,24 +485,41 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Method, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Method)
-                    @Html.ValidationMessageFor(model => model.Method, "", new { @class = "text-danger" })
-                </div>
+                @Html.EditorFor(model => model.Method, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Method, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Send, "Send", htmlAttributes: new { @class = "control-label col-md-2" })
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.Send, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Send", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.DropDownList("Send", DDL.GetSend() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+
                 @Html.ValidationMessageFor(model => model.Send, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.City1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownList("City1", DDL.GetAdd() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Postal1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownList("Postal1", DDL.GetZone() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Address1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -323,10 +529,19 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Postal1, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.City2, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Postal1, new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.DropDownList("City2", DDL.GetAdd() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Postal1, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Postal2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Postal2", DDL.GetZone() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postal2, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -338,13 +553,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Postal2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Postal2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Postal2, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Emergency, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -355,9 +563,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Relationship, "Relationship", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Relationship, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Relationship", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.DropDownList("Relationship", DDL.GetRelationship() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Relationship, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -371,6 +580,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
@@ -379,7 +596,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "List")
 </div>
 
 @section Scripts {

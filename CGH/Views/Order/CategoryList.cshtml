@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CGH.Models.BuyCategory>
+
+@{
+    ViewBag.Title = "分類列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>分類列表</h2>
+
+<p>
+    @Html.ActionLink("建立新分類", "CategoryCreate")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BuyCategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Enable)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyCategoryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Enable)
+        </td>
+        <td>
+            @Html.ActionLink("修改", "CategoryEdit", new { _ID=item.BuyCategoryID }) 
+          
+           
+        </td>
+    </tr>
+}
+
+</table>

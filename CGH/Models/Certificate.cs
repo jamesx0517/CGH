@@ -16,7 +16,7 @@
         }
 
         public int CertificateID { get; set; }
-
+        [Display(Name="證明類別")]
         [StringLength(10)]
         public string CertificateName { get; set; }
 

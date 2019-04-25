@@ -1,15 +1,13 @@
 ﻿@model IEnumerable<CGH.Models.CertificateContent>
 
 @{
-    ViewBag.Title = "CertificateList";
+    ViewBag.Title = "在職證明列表";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CertificateList</h2>
+<h2>在職證明列表</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -55,7 +53,7 @@
         </td>
         <td>
 
-            @Html.ActionLink("在職證明列印", "InserviceVM", new { _ID=item.ContentID }) |
+            @Html.ActionLink("在職證明列印", "InserviceVM", new { _ID=item.ContentID }) 
  
         </td>
     </tr>

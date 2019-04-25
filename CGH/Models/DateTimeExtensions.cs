@@ -12,7 +12,7 @@ namespace CGH.Models
         {
             TaiwanCalendar taiwanCalendar = new TaiwanCalendar();
 
-            return string.Format(" {0}{1}",
+            return string.Format("{0}{1:00}",
             taiwanCalendar.GetYear(datetime),
             datetime.Month);
         }

@@ -1,11 +1,30 @@
 ﻿@model IEnumerable<CGH.Models.Hr>
 @using CGH.helper
+
 @{
-    ViewBag.Title = "List";
+    ViewBag.Title = "員工一覽表";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using (Html.BeginForm("List","CGH", FormMethod.Get))
 
-<h2>List</h2>
+{
+    <p>
+        <div class="form-group">
+            <div class="col-md-10">
+                @{ var DDL = new CGH.Models.DropDownList();}
+                員工狀況 @Html.DropDownList("Status", DDL.GetStatus() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                部門單位 @Html.DropDownList("Dep", DDL.GetDep() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                <input type="submit" value="Filter" />
+            </div>
+        </div>
+        
+</p>
+}<BR><BR>
+<h2>員工一覽表</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -44,7 +63,7 @@
             @Html.DisplayNameFor(model => model.Birthday)
         </th>
 
-        
+
         <th></th>
     </tr>
 
@@ -79,16 +98,16 @@
 
 
 
-            <td >
+            <td>
                 @Html.ToFullTaiwanDate(item.Birthday)
-              
+
             </td>
 
-    
+
 
             <td>
                 @Html.ActionLink("Edit", "Edit", new { _ID = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { _ID = item.ID }) 
+                @Html.ActionLink("Details", "Details", new { _ID = item.ID })
 
             </td>
         </tr>

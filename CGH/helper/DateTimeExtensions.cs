@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Globalization;
 using System.Web.Mvc;
+using CGH.Models;
 
 namespace CGH.helper
 {
@@ -23,7 +24,20 @@ namespace CGH.helper
                 datetime.Day);
         }
 
+        public static string ToName(this HtmlHelper helper, string menberID)
+        {
+            using (CGHContext _db = new CGHContext())
+            {
+                var BOSS = from _hr in _db.Hrs
+                           where _hr.MemberID == menberID
+                           select _hr.Name;
+                    /*_db.Hrs.Where(b=>b.MemberID==menberID).ToList();*/
+                
+                return string.Format("{0}",BOSS.ToList());
+            }
+        }
 
-       
+
+
     }
 }

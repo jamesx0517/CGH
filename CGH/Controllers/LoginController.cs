@@ -10,13 +10,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.Security;
 
+
 namespace CGH.Controllers
 {
     public class LoginController : Controller
     {
         private CGHContext _db = new CGHContext();
 
-        Models.Repo.IProve _IP = new Models.Repo.Prove();
+      
 
         protected override void Dispose(bool disposing)
         {
@@ -56,6 +57,10 @@ namespace CGH.Controllers
         public ActionResult Login(UsersTable _User)
         {
             // 請參考 UserDBController（第三天課程）的 Details動作，共有四種寫法。
+
+            string hash = GetSHA1.GetSHA1Hash(_User.Password);
+
+            _User.Password = hash;
             var ListOne = from m in _db.UsersTables
                           where m.UserID == _User.UserID && m.Password == _User.Password
                           select m;
@@ -142,6 +147,51 @@ namespace CGH.Controllers
 
             return RedirectToAction("Login");
             // 回到 登入畫面（Login動作）
+        }
+
+        public ActionResult Registered()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Registered([Bind(Include = "UserID,UserName, Password")]UsersTable _usersTable)
+        {
+            using (SqlConnection Conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["CGH"].ConnectionString))
+            {
+
+                Conn.Open();
+                if ((_usersTable != null) && (ModelState.IsValid))
+                // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
+                {
+                    string hash = GetSHA1.GetSHA1Hash(_usersTable.Password);
+
+                    _usersTable.Password = hash;
+                    string sqlstr = "INSERT INTO [UsersTable] (	[UserID],[UserName],[Password])";
+                    sqlstr += " VALUES (@UserID,@UserName,@Password)";
+                    int affectedRows = Conn.Execute(sqlstr, new
+                    {
+                        
+                        UserID=_usersTable.UserID,
+                        UserName=_usersTable.UserName,
+                        Password=_usersTable.Password
+
+
+                    });
+
+
+                    return RedirectToAction("Index");
+                }
+
+                else
+                {   // 搭配 ModelState.IsValid，如果驗證沒過，就出現錯誤訊息。
+                    ModelState.AddModelError("Value1", " 自訂錯誤訊息(1) ");   // 第一個輸入值是 key，第二個是錯誤訊息（字串）
+                    ModelState.AddModelError("Value2", " 自訂錯誤訊息(2) ");
+                    return View();   // 將錯誤訊息，返回並呈現在「新增」的檢視畫面上
+                }
+            }
+            
         }
     }
 }
