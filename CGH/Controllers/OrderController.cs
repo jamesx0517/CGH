@@ -51,6 +51,31 @@ namespace CGH.Controllers
             }
 
         }
+
+        public ActionResult OrderInventory(Order _date)
+        {
+
+            IQueryable<Order> ListAll = from _OrderTable in _db.Orders
+                                       where _OrderTable.Cancel==false
+                                        select _OrderTable;
+            string satrt = _date.StartDate.ToString();
+            string end = _date.EndDate.ToString();
+
+
+            if (!string.IsNullOrWhiteSpace(satrt)&& !string.IsNullOrWhiteSpace(end))
+            {
+
+                ListAll = ListAll.Where(x=>x.BillingDate>=_date.StartDate && x.BillingDate<= _date.EndDate);
+            }
+
+
+            
+            return View("OrderInventory", ListAll);
+
+
+        }
+
+
         public ActionResult OrderDetails(int? _ID)
         {
 
