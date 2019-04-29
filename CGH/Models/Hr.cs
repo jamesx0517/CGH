@@ -120,7 +120,7 @@ namespace CGH.Models
 
         [Display(Name = "最近體檢日期")]
         [Column(TypeName = "date")]
-        public DateTime? MEdate { get; set; }
+        public DateTime MEdate { get; set; }
 
         [Display(Name = "籍貫")]
         [StringLength(10)]
