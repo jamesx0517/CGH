@@ -52,29 +52,84 @@ namespace CGH.Controllers
 
         }
 
-        public ActionResult OrderInventory(Order _date)
+        public ActionResult OrderInventory()
         {
 
+
+
+            //IQueryable <Order> ListAll = from _OrderTable in _db.Orders
+            //                           where _OrderTable.Cancel==false &&
+            //                           _OrderTable.BillingDate >= _date.StartDate && 
+            //                           _OrderTable.BillingDate <= _date.EndDate
+            //                           select _OrderTable;
+
+            //return View("OrderInventory", ListAll);
+
+            return View();
+        }
+
+        public ActionResult OrderDate()
+        {
+
+
+
+
+            return View();
+        }
+
+
+        public ActionResult OrderLeft()
+        {
+
+
+
+
+            return View();
+        }
+
+        public ActionResult OrderInventory2(Order _search)
+        {
+
+
+
             IQueryable<Order> ListAll = from _OrderTable in _db.Orders
-                                       where _OrderTable.Cancel==false
+                                        where _OrderTable.Cancel == _search.Cancel &&
+                                        _OrderTable.BillingDate >= _search.StartDate &&
+                                        _OrderTable.BillingDate <= _search.EndDate
+                                        orderby _OrderTable.OrderID
                                         select _OrderTable;
-            string satrt = _date.StartDate.ToString();
-            string end = _date.EndDate.ToString();
 
-
-            if (!string.IsNullOrWhiteSpace(satrt)&& !string.IsNullOrWhiteSpace(end))
+            string BuyerUnit = _search.BuyerUnit.ToString();
+            string Category = _search.Category.ToString();
+            if (!string.IsNullOrWhiteSpace(BuyerUnit))
             {
 
-                ListAll = ListAll.Where(x=>x.BillingDate>=_date.StartDate && x.BillingDate<= _date.EndDate);
+                ListAll = ListAll.Where(s => s.BuyerUnit == _search.BuyerUnit);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Category))
+            {
+
+                ListAll = ListAll.Where(s => s.Category == _search.Category);
+            }
+           
+
+            if (!string.IsNullOrWhiteSpace(_search.UserID))
+            {
+
+                ListAll = ListAll.Where(s => s.UserID == _search.UserID);
             }
 
 
-            
-            return View("OrderInventory", ListAll);
+            if (!string.IsNullOrWhiteSpace(_search.BuyerName))
+            {
+                
+                ListAll = ListAll.Where(s => s.BuyerName.Contains(_search.BuyerName) || s.OrderID.ToString().Contains(_search.BuyerName));
+            }
+            return View("OrderInventory2", ListAll);
 
-
+          
         }
-
 
         public ActionResult OrderDetails(int? _ID)
         {

@@ -1,0 +1,180 @@
+﻿@model IEnumerable<CGH.Models.Order>
+@using CGH.helper
+
+@{
+    ViewBag.Title = "收據清冊";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("OrderInventory", "Order", FormMethod.Get))
+
+{
+
+
+    @Html.AntiForgeryToken()
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <link rel="stylesheet" href="~/jquery/jquery-ui.css" />
+    <script src="~/jquery/jquery-ui.js"></script>
+    <script src="~/jquery/datepicker-zh-TW.js"></script>
+    <script>
+
+        $(function () {
+            $("#StartDate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+        });
+        $(function () {
+            $("#EndDate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+        });
+
+        $(function () {
+
+
+            $('.vTotal').each(function (i) {
+                var vTotal = 0;
+                $(this).parent().parent()
+                    .find('td:nth-child(' + (i + 6) + '),th:nth-child(' + (i + 6) + ')')
+                    .each(function (i) {
+                        vTotal += parseInt($(this).text());
+                    });
+                $(this).text(vTotal);
+            });
+        });
+
+     
+
+   
+    </script>
+    <p>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                開始日期<input type="text" id="StartDate" name="StartDate" class="form-control"  />
+
+  
+                結束日期<input type="text" id="EndDate" name="EndDate" class="form-control"/>
+                <input type="submit" value="查詢" />
+            </div>
+        </div>
+
+    </p>
+}
+<br>
+<br>
+<br>
+<br>
+<br><br>
+
+<h2>收據清冊</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BillingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuyerUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuyerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Money)
+            </th>
+
+            <th>
+                印花稅
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ToFullTaiwanDate(item.BillingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BuyerUnit1.BuyerUnitName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BuyerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BuyCategory1.BuyCategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Money)
+                </td>
+                <td>
+                   @Html.Tax(item.Money)
+                </td>
+                <td>
+                    @Html.ToFullTaiwanDate(item.StartDate)
+                </td>
+                <td>
+                    @Html.ToFullTaiwanDate(item.EndDate)
+
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsersTable1.UserName)
+                </td>
+
+            </tr>
+        }
+
+        <tr>
+            <th>加總：</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th class="vTotal">0</th>
+            <th class="vTotal">0</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </tbody>
+</table>

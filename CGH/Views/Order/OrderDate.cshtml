@@ -1,0 +1,115 @@
+﻿@model CGH.Models.Order
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link rel="stylesheet" href="~/jquery/jquery-ui.css" />
+    <script src="~/jquery/jquery-ui.js"></script>
+    <script src="~/jquery/datepicker-zh-TW.js"></script>
+    <script>
+
+        $(function () {
+            $("#StartDate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true,
+                    pickerPosition: 'top-right'
+                });
+
+        });
+        $(function () {
+            $("#EndDate").datepicker(
+
+                {
+                    changeMonth: true,
+                    changeYear: true
+                });
+
+        });
+
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+
+    <div class="container body-content">
+
+
+        @using (Html.BeginForm("OrderInventory2", "Order", FormMethod.Get, new { target = "Down" }))
+
+        {
+
+
+            @Html.AntiForgeryToken()
+
+            <p>
+                <div class="form-group">
+
+                    <div class="col-md-10">
+                        開始日期<input type="text" id="StartDate" name="StartDate" />
+
+
+                        結束日期<input type="text" id="EndDate" name="EndDate" />
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BuyerUnit, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @{ var DDL = new CGH.Models.DropDownList();}
+                            <div class="col-md-10">
+                                @Html.DropDownList("BuyerUnit", DDL.GetBuyerUnit() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BuyerUnit, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("Category", DDL.GetBuyCategory() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+
+                                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("UserID", DDL.GetUserID() as SelectList, "請選擇", htmlAttributes: new { @class = "form-control" })
+
+                                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        作廢
+                        @{var Cancel = new List<SelectListItem>
+                                     {new SelectListItem{Text="否",Value="false"},
+                                      new SelectListItem{Text="是",Value="True"},};
+                        }
+                        @Html.DropDownList("Cancel", Cancel, htmlAttributes: new { @class = "form-control" })<br />
+                        關鍵字<input type="text" id="BuyerName" name="BuyerName" /><br/>
+                        <input type="submit" value="查詢" />
+                    </div>
+                </div>
+
+            </p>
+        }
+
+    </div>
+</body>
+</html>
