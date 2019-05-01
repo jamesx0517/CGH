@@ -39,17 +39,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.Money)
             </th>
-            @*<th width="13%">
+            <th>
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
-            <th width="13%">
+            <th >
                 @Html.DisplayNameFor(model => model.EndDate)
-            </th>*@
+            </th>
 
             <th>
                 @Html.DisplayNameFor(model => model.Remark)
             </th>
-            <th>
+            <th width="75">
                 @Html.DisplayNameFor(model => model.UserID)
             </th>
             <th></th>
@@ -85,13 +85,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Money)
             </td>
-            @*<td>
+            <td>
 
                 @Html.ToFullTaiwanDate(item.StartDate)
             </td>
             <td>
                 @Html.ToFullTaiwanDate(item.EndDate)
-            </td>*@
+            </td>
 
             <td>
                 @Html.DisplayFor(modelItem => item.Remark)
