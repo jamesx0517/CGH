@@ -120,6 +120,17 @@ namespace CGH.Models
             }
         }
 
+        public SelectList GetDep1()
+        {
+            using (CGHContext _db = new CGHContext())
+            {
+                var dep = _db.Dep1s.ToList();
+                SelectList Dep1listItems = new SelectList(dep, "Dep1ID", "Dep1Name");
+                return Dep1listItems;
+            }
+        }
+
+
         public SelectList GetZone()
         {
             using (CGHContext _db = new CGHContext())
@@ -217,6 +228,20 @@ namespace CGH.Models
 
                 SelectList BossItem = new SelectList(boss, "MemberID", "Name");
                 return BossItem;
+
+
+            }
+        }
+
+        public SelectList GetUserID()
+        {
+            using (CGHContext _db = new CGHContext())
+            {
+                var UserID = _db.UsersTables.ToList();
+
+
+                SelectList UserItem = new SelectList(UserID, "UserID", "UserName");
+                return UserItem;
 
 
             }
