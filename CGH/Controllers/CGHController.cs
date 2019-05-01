@@ -291,57 +291,101 @@ namespace CGH.Controllers
             {
 
                 Conn.Open();
-                if ((_hr != null) && (ModelState.IsValid))
+                if (_hr != null)
                 // ModelState.IsValid，通過表單驗證（Server-side validation）需搭配 Model底下類別檔的 [驗證]
-                {
-                    string sqlstr = "INSERT INTO [Hr] (	[MemberID],[Status],[Name],[IDcardNO],[Birthday],[Nationality],[StartDate],[Labor],[Hire],[Dep],[TitleID],[Boss],[Manager],[Remarks],[Marriage],[Blood],[Sex],[Height],[Weight],[Military],[MEdate],[Birthplace],[Email],[MobilePhone],[HomePhone],[City1],[Address1],[Postal1],[City2],[Address2],[Postal2],[Emergency],[Relationship],[Ephone],[Highestedu],[Graduation])";
-                    sqlstr += " VALUES (@MemberID,@Status,@Name,@IDcardNO,@Birthday,@Nationality,@StartDate,@Labor,@Hire,@Dep,@TitleID,@Boss,@Manager,@Remarks,@Marriage,@Blood,@Sex,@Height,@Weight,@Military,@MEdate,@Birthplace,@Email,@MobilePhone,@HomePhone,@City1,@Address1,@Postal1,@City2,@Address2,@Postal2,@Emergency,@Relationship,@Ephone,@Highestedu,@Graduation)";
-                    int affectedRows = Conn.Execute(sqlstr, new
+                {//體檢日不為null
+                    if (_hr.MEdate.ToString() != "0001/1/1 上午 12:00:00")
                     {
-                        MemberID = _hr.MemberID,
-                        Status = _hr.Status,
-                        Name = _hr.Name,
-                        IDcardNO = _hr.IDcardNO,
-                        Birthday = _hr.Birthday,
-                        Nationality = _hr.Nationality,
-                        StartDate = _hr.StartDate,
-                        Labor = _hr.Labor,
-                        Hire = _hr.Hire,
-                        Dep = _hr.Dep,
-                        TitleID = _hr.TitleID,
-                        Boss = _hr.Boss,
-                        Manager = _hr.Manager,
-                        Remarks = _hr.Remarks,
-                        Marriage = _hr.Marriage,
-                        Blood = _hr.Blood,
-                        Sex = _hr.Sex,
-                        Height = _hr.Height,
-                        Weight = _hr.Weight,
-                        Military = _hr.Military,
-                        MEdate = _hr.MEdate,
-                        Birthplace = _hr.Birthplace,
-                        Email = _hr.Email,
-                        MobilePhone = _hr.MobilePhone,
-                        HomePhone = _hr.HomePhone,
-                        City1=_hr.City1,
-                        Address1 = _hr.Address1,
-                        Postal1 = _hr.Postal1,
-                        City2=_hr.City2,
-                        Address2 = _hr.Address2,
-                        Postal2 = _hr.Postal2,
-                        Emergency = _hr.Emergency,
-                        Relationship = _hr.Relationship,
-                        Ephone = _hr.Ephone,
-                        Highestedu = _hr.Highestedu,
-                        Graduation = _hr.Graduation
+
+                        string sqlstr = "INSERT INTO [Hr] (	[MemberID],[Status],[Name],[IDcardNO],[Birthday],[Nationality],[StartDate],[Labor],[Hire],[Dep],[TitleID],[Boss],[Manager],[Remarks],[Marriage],[Blood],[Sex],[Height],[Weight],[Military],[MEdate],[Birthplace],[Email],[MobilePhone],[HomePhone],[Address1],[Postal1],[Address2],[Postal2],[Emergency],[Relationship],[Ephone],[Highestedu],[Graduation])";
+                        sqlstr += " VALUES (@MemberID,@Status,@Name,@IDcardNO,@Birthday,@Nationality,@StartDate,@Labor,@Hire,@Dep,@TitleID,@Boss,@Manager,@Remarks,@Marriage,@Blood,@Sex,@Height,@Weight,@Military,@MEdate,@Birthplace,@Email,@MobilePhone,@HomePhone,@Address1,@Postal1,@Address2,@Postal2,@Emergency,@Relationship,@Ephone,@Highestedu,@Graduation)";
+                        int affectedRows = Conn.Execute(sqlstr, new
+                        {
+                            MemberID = _hr.MemberID,
+                            Status = _hr.Status,
+                            Name = _hr.Name,
+                            IDcardNO = _hr.IDcardNO,
+                            Birthday = _hr.Birthday,
+                            Nationality = _hr.Nationality,
+                            StartDate = _hr.StartDate,
+                            Labor = _hr.Labor,
+                            Hire = _hr.Hire,
+                            Dep = _hr.Dep,
+                            TitleID = _hr.TitleID,
+                            Boss = _hr.Boss,
+                            Manager = _hr.Manager,
+                            Remarks = _hr.Remarks,
+                            Marriage = _hr.Marriage,
+                            Blood = _hr.Blood,
+                            Sex = _hr.Sex,
+                            Height = _hr.Height,
+                            Weight = _hr.Weight,
+                            Military = _hr.Military,
+                            MEdate = _hr.MEdate,
+                            Birthplace = _hr.Birthplace,
+                            Email = _hr.Email,
+                            MobilePhone = _hr.MobilePhone,
+                            HomePhone = _hr.HomePhone,
+                            Address1 = _hr.Address1,
+                            Postal1 = _hr.Postal1,
+                            Address2 = _hr.Address2,
+                            Postal2 = _hr.Postal2,
+                            Emergency = _hr.Emergency,
+                            Relationship = _hr.Relationship,
+                            Ephone = _hr.Ephone,
+                            Highestedu = _hr.Highestedu,
+                            Graduation = _hr.Graduation
 
 
-                    });
+                        }
+                        );
+                    }
+                    else
+                    {
+                        string sqlstr = "INSERT INTO [Hr] (	[MemberID],[Status],[Name],[IDcardNO],[Birthday],[Nationality],[StartDate],[Labor],[Hire],[Dep],[TitleID],[Boss],[Manager],[Remarks],[Marriage],[Blood],[Sex],[Height],[Weight],[Military],[Birthplace],[Email],[MobilePhone],[HomePhone],[Address1],[Postal1],[Address2],[Postal2],[Emergency],[Relationship],[Ephone],[Highestedu],[Graduation])";
+                        sqlstr += " VALUES (@MemberID,@Status,@Name,@IDcardNO,@Birthday,@Nationality,@StartDate,@Labor,@Hire,@Dep,@TitleID,@Boss,@Manager,@Remarks,@Marriage,@Blood,@Sex,@Height,@Weight,@Military,@Birthplace,@Email,@MobilePhone,@HomePhone,@Address1,@Postal1,@Address2,@Postal2,@Emergency,@Relationship,@Ephone,@Highestedu,@Graduation)";
+                        int affectedRows = Conn.Execute(sqlstr, new
+                        {
+                            MemberID = _hr.MemberID,
+                            Status = _hr.Status,
+                            Name = _hr.Name,
+                            IDcardNO = _hr.IDcardNO,
+                            Birthday = _hr.Birthday,
+                            Nationality = _hr.Nationality,
+                            StartDate = _hr.StartDate,
+                            Labor = _hr.Labor,
+                            Hire = _hr.Hire,
+                            Dep = _hr.Dep,
+                            TitleID = _hr.TitleID,
+                            Boss = _hr.Boss,
+                            Manager = _hr.Manager,
+                            Remarks = _hr.Remarks,
+                            Marriage = _hr.Marriage,
+                            Blood = _hr.Blood,
+                            Sex = _hr.Sex,
+                            Height = _hr.Height,
+                            Weight = _hr.Weight,
+                            Military = _hr.Military,
 
+                            Birthplace = _hr.Birthplace,
+                            Email = _hr.Email,
+                            MobilePhone = _hr.MobilePhone,
+                            HomePhone = _hr.HomePhone,
+                            Address1 = _hr.Address1,
+                            Postal1 = _hr.Postal1,
+                            Address2 = _hr.Address2,
+                            Postal2 = _hr.Postal2,
+                            Emergency = _hr.Emergency,
+                            Relationship = _hr.Relationship,
+                            Ephone = _hr.Ephone,
+                            Highestedu = _hr.Highestedu,
+                            Graduation = _hr.Graduation
 
+                        });
+                    }
                     return RedirectToAction("List");
                 }
-              
+
                 else
                 {   // 搭配 ModelState.IsValid，如果驗證沒過，就出現錯誤訊息。
                     ModelState.AddModelError("Value1", " 自訂錯誤訊息(1) ");   // 第一個輸入值是 key，第二個是錯誤訊息（字串）

@@ -291,7 +291,12 @@
     <Content Include="Views\CGH\LeaveList.cshtml" />
     <Content Include="Views\Login\LogOut.cshtml" />
     <Content Include="Views\Order\OrderEdit.cshtml" />
+    <Content Include="Views\Order\OrderInventory-ok.cshtml" />
     <Content Include="Views\Order\OrderInventory.cshtml" />
+    <Content Include="Views\Order\OrderDate.cshtml" />
+    <Content Include="Views\Order\OrderInventory2.cshtml" />
+    <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="Views\Order\OrderLeft.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
