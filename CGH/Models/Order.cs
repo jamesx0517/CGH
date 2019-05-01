@@ -10,7 +10,7 @@
     public partial class Order
     {
         public int ID { get; set; }
-        [Display(Name = "訂單編號")]
+        [Display(Name = "單據編號")]
         public int? OrderID { get; set; }
         [Display(Name = "單位")]
         public int? BuyerUnit { get; set; }
